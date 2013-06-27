@@ -108,6 +108,39 @@ class UserController
             'email' => $request->request->get('email'),
         ));
     }
+    
+    /**
+     * sends a new password by email
+     * @param \Silex\Application $app
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function forgotPasswordAction(Application $app, Request $request)
+    {
+        
+        if($request->isMethod('POST'))
+        {
+            //generate the new password$request->get('email')
+           $user =  $this->userManager->loadUserByUsername($request->get('email'));
+           $newPass = $this->userManager->resetUserPassword($user);
+
+            //create user email
+            $messageContent = 'Hi, This is an automated message from Cortext Authentification : you requested a password change. Please find below your new password : \n_________________________________________________________\n '
+            .$newPass.'__________________________________________________\n\n Make sure you change it the nexte time you log into Cortext ! \n\n regards, the Cortext Administration Team';
+
+            $message = \Swift_Message::newInstance()
+            ->setSubject('[Cortext] New Password')
+            ->setFrom(array('webmaster@cortext.fr'))
+            ->setTo(array($request->get('email')))
+            ->setBody($messageContent);
+
+            //send email
+             $app['mailer']->send($message);
+             
+            //display confirmation
+            return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true));
+        }
+         
+    }
 
     /**
      * @param Request $request

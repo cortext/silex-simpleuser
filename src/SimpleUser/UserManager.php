@@ -182,7 +182,14 @@ class UserManager implements UserProviderInterface
     {
         return $user->getPassword() === $this->encodeUserPassword($user, $password);
     }
-
+    
+    public function resetUserPassword(User $user)
+    {
+        $newPass = 'pSwD'. rand(0, 1000); //@todo generate new password correctly
+        $user->setPassword($newPass);
+        return $newPass;
+    }
+    
     /**
      * Get a User instance for the currently logged in User, if any.
      *
