@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 use InvalidArgumentException;
 
 /**
@@ -119,25 +120,44 @@ class UserController
         
         if($request->isMethod('POST'))
         {
+            $email = $request->get('email');
             //generate the new password$request->get('email')
-           $user =  $this->userManager->loadUserByUsername($request->get('email'));
+           $user =  $this->userManager->loadUserByUsername($email);
            $newPass = $this->userManager->resetUserPassword($user);
 
             //create user email
-            $messageContent = 'Hi, This is an automated message from Cortext Authentification : you requested a password change. Please find below your new password : \n_________________________________________________________\n '
-            .$newPass.'__________________________________________________\n\n Make sure you change it the nexte time you log into Cortext ! \n\n regards, the Cortext Administration Team';
+            $messageContent = "Hi,
+                This is an automated message from Cortext Authentification : you requested a password change. Please find below your new password : 
+                \n_________________________________________________________\n '
+            .$newPass.'__________________________________________________\n\n
+              Make sure you change it the nexte time you log into Cortext ! \n\n regards, the Cortext Administration Team";
 
             $message = \Swift_Message::newInstance()
             ->setSubject('[Cortext] New Password')
             ->setFrom(array('webmaster@cortext.fr'))
-            ->setTo(array($request->get('email')))
+            ->setTo(array($email))
             ->setBody($messageContent);
 
             //send email
-             $app['mailer']->send($message);
-             
-            //display confirmation
-            return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true));
+           
+            $app['monolog']->info("Sending mail : ".$messageContent);
+            
+            if( $app['mailer']->send($message))             
+            {
+                //display confirmation
+                return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true,'email'=>$email,  'layout_template' => $this->layoutTemplate ));
+            }
+            else 
+            {
+                throw new ErrorException('Mail has encountered an error while sending the password, please contact admin.');
+                return 1;
+            }
+
+        }
+        else
+        {
+              //display form
+            return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>false,  'layout_template' => $this->layoutTemplate));
         }
          
     }

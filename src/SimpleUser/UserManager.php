@@ -13,6 +13,7 @@ use Silex\Application;
 
 class UserManager implements UserProviderInterface
 {
+
     /** @var Connection */
     protected $conn;
 
@@ -46,7 +47,8 @@ class UserManager implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->findOneBy(array('email' => $username));
-        if (!$user) {
+        if (!$user)
+        {
             throw new UsernameNotFoundException(sprintf('Email "%s" does not exist.', $username));
         }
 
@@ -67,7 +69,8 @@ class UserManager implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        if (!$this->supportsClass(get_class($user))) {
+        if (!$this->supportsClass(get_class($user)))
+        {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
@@ -101,7 +104,8 @@ class UserManager implements UserProviderInterface
         $user->setPassword($data['password']);
         $user->setSalt($data['salt']);
         $user->setName($data['name']);
-        if ($roles = explode(',', $data['roles'])) {
+        if ($roles = explode(',', $data['roles']))
+        {
             $user->setRoles($roles);
         }
         $user->setTimeCreated($data['time_created']);
@@ -122,14 +126,17 @@ class UserManager implements UserProviderInterface
     {
         $user = new User($email);
 
-        if (!empty($plainPassword)) {
+        if (!empty($plainPassword))
+        {
             $this->setUserPassword($user, $plainPassword);
         }
 
-        if ($name !== null) {
+        if ($name !== null)
+        {
             $user->setName($name);
         }
-        if (!empty($roles)) {
+        if (!empty($roles))
+        {
             $user->setRoles($roles);
         }
 
@@ -182,14 +189,23 @@ class UserManager implements UserProviderInterface
     {
         return $user->getPassword() === $this->encodeUserPassword($user, $password);
     }
-    
+
     public function resetUserPassword(User $user)
     {
-        $newPass = 'pSwD'. rand(0, 1000); //@todo generate new password correctly
-        $user->setPassword($newPass);
+        //Generate a RANDOM MD5 Hash for a password
+        $random_password = md5(uniqid(rand()));
+
+        //Take the first 8 digits and use them as the password we intend to email the user
+        $newPass = substr($random_password, 0, 8);
+        //$newPass="toto";
+        //setting user pass in DB
+        $this->setUserPassword($user, $newPass);
+        $this->update($user);
+        
+        //return clean password for emailing
         return $newPass;
     }
-    
+
     /**
      * Get a User instance for the currently logged in User, if any.
      *
@@ -197,7 +213,8 @@ class UserManager implements UserProviderInterface
      */
     public function getCurrentUser()
     {
-        if ($this->isLoggedIn()) {
+        if ($this->isLoggedIn())
+        {
             return $this->app['security']->getToken()->getUser();
         }
 
@@ -212,7 +229,8 @@ class UserManager implements UserProviderInterface
     function isLoggedIn()
     {
         $token = $this->app['security']->getToken();
-        if (null === $token) {
+        if (null === $token)
+        {
             return false;
         }
 
@@ -240,7 +258,8 @@ class UserManager implements UserProviderInterface
     {
         $users = $this->findBy($criteria);
 
-        if (empty($users)) {
+        if (empty($users))
+        {
             return null;
         }
 
@@ -260,7 +279,8 @@ class UserManager implements UserProviderInterface
     public function findBy(array $criteria = array(), array $options = array())
     {
         // Check the identity map first.
-        if (array_key_exists('id', $criteria) && array_key_exists($criteria['id'], $this->identityMap)) {
+        if (array_key_exists('id', $criteria) && array_key_exists($criteria['id'], $this->identityMap))
+        {
             return array($this->identityMap[$criteria['id']]);
         }
 
@@ -268,11 +288,13 @@ class UserManager implements UserProviderInterface
 
         $sql = 'SELECT * ' . $common_sql;
 
-        if (array_key_exists('order_by', $options)) {
+        if (array_key_exists('order_by', $options))
+        {
             list ($order_by, $order_dir) = is_array($options['order_by']) ? $options['order_by'] : array($options['order_by']);
             $sql .= 'ORDER BY ' . $this->conn->quoteIdentifier($order_by) . ' ' . ($order_dir == 'DESC' ? 'DESC' : 'ASC') . ' ';
         }
-        if (array_key_exists('limit', $options)) {
+        if (array_key_exists('limit', $options))
+        {
             list ($offset, $limit) = is_array($options['limit']) ? $options['limit'] : array(0, $options['limit']);
             $sql .= 'LIMIT ' . (int) $offset . ', ' . (int) $limit . ' ';
         }
@@ -280,10 +302,13 @@ class UserManager implements UserProviderInterface
         $data = $this->conn->fetchAll($sql, $params);
 
         $users = array();
-        foreach ($data as $userData) {
-            if (array_key_exists($userData['id'], $this->identityMap)) {
+        foreach ($data as $userData)
+        {
+            if (array_key_exists($userData['id'], $this->identityMap))
+            {
                 $user = $this->identityMap[$userData['id']];
-            } else {
+            } else
+            {
                 $user = $this->hydrateUser($userData);
                 $this->identityMap[$user->getId()] = $user;
             }
@@ -306,13 +331,14 @@ class UserManager implements UserProviderInterface
         $sql = 'FROM users ';
 
         $first_crit = true;
-        foreach ($criteria as $key => $val) {
+        foreach ($criteria as $key => $val)
+        {
             $sql .= ($first_crit ? 'WHERE' : 'AND') . ' ' . $key . ' = :' . $key . ' ';
             $params[$key] = $val;
             $first_crit = false;
         }
 
-        return array ($sql, $params);
+        return array($sql, $params);
     }
 
     /**
@@ -327,7 +353,7 @@ class UserManager implements UserProviderInterface
 
         $sql = 'SELECT COUNT(*) ' . $common_sql;
 
-        return $this->conn->fetchColumn($sql, $params) ?: 0;
+        return $this->conn->fetchColumn($sql, $params) ? : 0;
     }
 
     /**

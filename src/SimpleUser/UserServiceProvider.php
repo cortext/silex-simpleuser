@@ -108,6 +108,9 @@ class UserServiceProvider implements ServiceProviderInterface, ControllerProvide
 
         $controllers->method('GET|POST')->match('/register', 'user.controller:registerAction')
             ->bind('user.register');
+        
+         $controllers->method('GET|POST')->match('/forgotPassword', 'user.controller:forgotPasswordAction')
+            ->bind('user.forgotPassword');
 
         $controllers->get('/login', 'user.controller:loginAction')
             ->bind('user.login');
