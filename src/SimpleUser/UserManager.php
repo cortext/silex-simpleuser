@@ -220,6 +220,20 @@ class UserManager implements UserProviderInterface
 
         return null;
     }
+    
+    /**
+     * Get the current user shared informations (id, name, profile, ...)
+     */
+    public function getUserInfos()
+    {
+        $user = $this->getCurrentUser();
+        return array(
+            'id' =>$user->getId(),
+            'username' => $user->getUsername(),
+            'email' =>  $user->getEmail(),
+            'name' => $user->getName()
+          );
+    }
 
     /**
      * Test whether the current user is authenticated.

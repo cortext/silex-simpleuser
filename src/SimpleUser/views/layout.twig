@@ -12,9 +12,12 @@
     <body>
         <div class="navbar">
             <div class="navbar-inner">
+                <a class="brand" href="{{ path('homepage') }}"><img alt="cortext platform logo" src="/images/logo_cortext.png"></a>
                 <ul class="nav">
+                     {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> List users</a></li>
                     <li class="divider-vertical"></li>
+                    {% endif %}
                     {% if app.user %}
                         <li><a href="{{ path('user') }}"><i class="icon-user"></i> {{ app.user.displayName }}</a></li>
                         <li class="divider-vertical"></li>

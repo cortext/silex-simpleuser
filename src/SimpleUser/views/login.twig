@@ -5,13 +5,17 @@
 {% block content %}
 
     {% if app.user %}
-        <p>Hello, {{ app.user.displayName }}.</p>
-        <p><a href="{{ path('user.logout') }}">Sign out</a></p>
+        <p>Hi  {{ app.user.displayName }}.</p>
+        <p>
+           <a href="{{ path('homepage') }}" class='btn btn-primary'><i class="icon-lock icon-white"></i> Test authentication server</a>
+           <a href="{{ path('user') }}" class='btn'><i class="icon-user"></i>View / edit profile</a>
+        </p>
 
     {% else %}
         <div class="page-header">
+           
             <h1>
-                Sign in<br/>
+               Cortext Platform -  Sign in<br/>
                 <small>Don't have an account? <a href="{{ path('user.register') }}">Register now.</a></small>
             </h1>
         </div>

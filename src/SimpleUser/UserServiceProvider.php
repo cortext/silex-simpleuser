@@ -104,7 +104,12 @@ class UserServiceProvider implements ServiceProviderInterface, ControllerProvide
             });
 
         $controllers->get('/list', 'user.controller:listAction')
-            ->bind('user.list');
+            ->bind('user.list')
+            ->before(function(Request $request) use ($app) {
+                if (!$app['security']->isGranted('ROLE_ADMIN', $request->get('id'))) {
+                    throw new AccessDeniedException();
+                }
+            });
 
         $controllers->method('GET|POST')->match('/register', 'user.controller:registerAction')
             ->bind('user.register');
