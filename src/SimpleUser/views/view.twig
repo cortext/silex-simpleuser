@@ -15,18 +15,12 @@
         </div>
         <div class="profile">
             <table class='table'>
-                <tr>
-                    <td>id</td>
-                    <td>{{ user.id }}</td>
-                    </tr>
+                    {% for key,item in profile %}
                     <tr>
-                    <td>Name</td>
-                    <td>{{ user.name }}</td>
+                        <td>{{key}}</td>
+                        <td>{{item}}</td>
                     </tr>
-                    <tr>
-                    <td>Email</td>
-                    <td>{{ user.email }}</td>
-                    </tr>
+                    {% endfor %}
             </table>
         </div>
         {#% if is_granted('EDIT_USER') %#}

@@ -198,7 +198,8 @@ class UserController
     public function viewAction(Application $app, Request $request, $id)
     {
         $user = $this->userManager->getUser($id);
-
+        $userProfile = $this->userManager->getUserProfile($id);
+      //  die(print_r($userInfos));
         if (!$user) {
             throw new NotFoundHttpException('No user was found with that ID.');
         }
@@ -206,6 +207,7 @@ class UserController
         return $app['twig']->render('@user/view.twig', array(
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
+            'profile' => $userProfile,
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ));
 
