@@ -230,7 +230,7 @@ class UserManager implements UserProviderInterface
         return array(
             'id' =>$user->getId(),
             'username' => $user->getUsername(),
-            'e-mail' =>  $user->getEmail(),
+            'email' =>  $user->getEmail(),
             'name' => $user->getName()
           );
     }
