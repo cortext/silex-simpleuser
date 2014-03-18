@@ -95,18 +95,22 @@ class UserController
                     $app['security']->setToken($token);
                 }
 
-                return $app->redirect($app['url_generator']->generate('user.view', array('id' => $user->getId())));
+                if($request->request->get('callback'))
+                  return $app->redirect($request->request->get('callback'));
+                else
+                  return $app->redirect($app['url_generator']->generate('user.view', array('id' => $user->getId())));
 
             } catch (InvalidArgumentException $e) {
                 $error = $e->getMessage();
             }
         }
-
+        //die(print_r($request->query, true));
         return $app['twig']->render('@user/register.twig', array(
             'layout_template' => $this->layoutTemplate,
             'error' => isset($error) ? $error : null,
             'name' => $request->request->get('name'),
             'email' => $request->request->get('email'),
+            'callback' => $request->query->get('callback'),
         ));
     }
     
