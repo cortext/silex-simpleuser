@@ -236,6 +236,25 @@ class UserManager implements UserProviderInterface
     }
 
     /**
+     * Get the current user list with shared informations (id, name, profile, ...)
+     */
+    public function getUsersListProfile()
+    {
+        $userList = array();
+
+        foreach ($this->findBy(array()) as $id => $user) {
+            array_push($userList, array(
+            'id' =>$user->getId(),
+            'username' => $user->getUsername(),
+            'email' =>  $user->getEmail(),
+            'name' => $user->getName()
+          ));
+        }
+        return $userList;
+    }
+   
+
+    /**
      * Test whether the current user is authenticated.
      *
      * @return boolean
