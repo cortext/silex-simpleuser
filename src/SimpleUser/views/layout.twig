@@ -2,7 +2,16 @@
 <html>
     <head>
         {% block head %}
-            <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+           
+           <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="/css/main.css" type="text/css" rel="stylesheet" />  
+                <link href="/css/reset.css" type="text/css" rel="stylesheet" />  
+        <link href="/css/login.css" type="text/css" rel="stylesheet" /> -->
+
+         <link rel="stylesheet" href="{{ app.request.basePath }}/css/reset.css">
+           <link rel="stylesheet" href="{{ app.request.basePath }}/css/main.css">
+           <link rel="stylesheet" href="{{ app.request.basePath }}/css/login.css"> 
+
             <title>{% block title %}{% endblock %}</title>
             <style type="text/css">
                 body { padding: 10px; }
@@ -10,31 +19,64 @@
         {% endblock %}
     </head>
     <body>
-        <div class="navbar">
+
+     <div id="content">  
+
+        <div id="header">
+            <div id="menu">
+            <nav id="path">
+          
             <div class="navbar-inner">
-                <a class="brand" href="{{ path('homepage') }}"><img alt="cortext platform logo" src="/images/logo_cortext.png"></a>
-                <ul class="nav">
+
+
+                <!--<a class="brand" href="{{ path('homepage') }}"> <img alt="cortext platform logo" src="/images/logo_cortext.png">-->
+                <ul>
+                 <li class="home"><a href="#"><img src="/images/home.png" alt="#"/></a></li></a>
+                 <li class="dashboard"><a class="name" href="#">register</a></li>
+                </ul>
+            </nav>
+            </div>
+
+
+                <div id="user" class="nav">
                      {% if is_granted('ROLE_ADMIN') %}
+
+
                     <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> List users</a></li>
-                    <li class="divider-vertical"></li>
+                    <!--<li class="divider-vertical"></li>-->
                     {% endif %}
                     {% if app.user %}
-                        <li><a href="{{ path('user') }}"><i class="icon-user"></i> {{ app.user.displayName }}</a></li>
+                        <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
+
+
+                        <li id="user-name"><a href="{{ path('user') }}">
+                        <img class="media-object pull-left" src="{{ imageUrl }}" width="40" height="40">
+
+                            <i class="icon-user"></i> {{ app.user.displayName }}</a></li>
+
+
                         <li class="divider-vertical"></li>
-                        <li><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
+                        
                     {% else %}
-                        <li><a href="{{ path('user.login') }}">Sign in</a></li>
+                        <!--<li id="sign"><a href="{{ path('user.login') }}">Sign in</a></li>-->
                         <li class="divider-vertical"></li>
-                        <li><a href="{{ path('user.register') }}">Create account</a></li>
+                        <li id="create-account"><a href="{{ path('user.register') }}">Create account</a></li>
                     {% endif %}
-                </ul>
-            </div>
-        </div>
+                
+                </div>
+            
+        
+  
+
         {% if app.session.flashbag.has('alert') %}
             {% for flashMessage in app.session.flashbag.get('alert') %}
                 <div class="alert">{{ flashMessage }}</div>
             {% endfor %}
         {% endif %}
-        <div id="content">{% block content %}{% endblock %}</div>
+
+ </div><!-- #header -->
+       
+        <div id="content2">{% block content %}{% endblock %}</div>
+    </div>
     </body>
 </html>
