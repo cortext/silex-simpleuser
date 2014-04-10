@@ -50,9 +50,9 @@
 
 
                         <li id="user-name"><a href="{{ path('user') }}">
-                        <img class="media-object pull-left" src="{{ imageUrl }}" width="40" height="40">
+                       
 
-                            <i class="icon-user"></i> {{ app.user.displayName }}</a></li>
+                        <i class="icon-user"></i> {{ app.user.displayName }}</a></li>
 
 
                         <li class="divider-vertical"></li>
@@ -63,10 +63,7 @@
                         <li id="create-account"><a href="{{ path('user.register') }}">Create account</a></li>
                     {% endif %}
                 
-                </div>
-            
-        
-  
+                </div>  
 
         {% if app.session.flashbag.has('alert') %}
             {% for flashMessage in app.session.flashbag.get('alert') %}
