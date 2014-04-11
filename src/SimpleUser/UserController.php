@@ -283,7 +283,7 @@ class UserController
             'error' => implode("\n", $errors),
             'user' => $user,
             'available_roles' => array('ROLE_USER', 'ROLE_ADMIN'),
-            'image_url' => $this->getGravatarUrl($user->getEmail()),
+            'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ));
     }
 
