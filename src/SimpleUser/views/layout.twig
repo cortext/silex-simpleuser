@@ -2,11 +2,6 @@
 <html>
     <head>
         {% block head %}
-           
-           <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-        <link href="/css/main.css" type="text/css" rel="stylesheet" />  
-                <link href="/css/reset.css" type="text/css" rel="stylesheet" />  
-        <link href="/css/login.css" type="text/css" rel="stylesheet" /> -->
 
          <link rel="stylesheet" href="{{ app.request.basePath }}/css/reset.css">
            <link rel="stylesheet" href="{{ app.request.basePath }}/css/main.css">
@@ -32,27 +27,24 @@
                 <!--<a class="brand" href="{{ path('homepage') }}"> <img alt="cortext platform logo" src="/images/logo_cortext.png">-->
                 <ul>
                  <li class="home"><a href="#"><img src="/images/home.png" alt="#"/></a></li></a>
-                 <li class="dashboard"><a class="name" href="#">register</a></li>
+                 <li class="dashboard"><a class="name" href="#">profil</a></li>
                 </ul>
             </nav>
             </div>
-
 
                 <div id="user" class="nav">
                      {% if is_granted('ROLE_ADMIN') %}
 
 
                     <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> List users</a></li>
-                    <!--<li class="divider-vertical"></li>-->
                     {% endif %}
                     {% if app.user %}
                         <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
+                 
 
+                        <li id="user-name"> <a href="{{ path('user') }}">                       
 
-                        <li id="user-name"><a href="{{ path('user') }}">
-                       
-
-                        <i class="icon-user"></i> {{ app.user.displayName }}</a></li>
+                        <i class="icon-user"></i><img src="{{ imageUrl }}" width="40" height="40"/> {{ app.user.displayName }}</a></li>
 
 
                         <li class="divider-vertical"></li>

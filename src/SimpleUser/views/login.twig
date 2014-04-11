@@ -41,20 +41,20 @@
                 </div>
             </div>
 
-            {% if allowRememberMe %}
-                <div class="control-group">
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="_remember_me" value="true" checked> Remember me
-                        </label>
-                    </div>
-                </div>
-            {% endif %}
-
+            
             <div class="control-group">
                 <div class="controls">
                     <button type="submit" class="btn bt-sign">Sign in</button>
                 </div>
+
+                {% if allowRememberMe %}
+                <div class="control-group">
+                    <div class="controls"><label class="case-label">Remember me </label>
+                            <input type="checkbox" name="_remember_me" class="case" value="true" checked>
+                    </div>
+                </div>
+            {% endif %}
+
                 <h3 class="infosign">Don't have an account? <a href="{{ path('user.register') }}">Register now.</a></h3>
 
             </div>
