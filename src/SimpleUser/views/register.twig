@@ -8,8 +8,8 @@
 
 
     {% if app.user %}
-        <p>Hello, {{ app.user.displayName }}. You are already registered and signed in.</p>
-        <p><a href="{{ path('user.logout') }}">Sign out</a></p>
+        <p>Hello, {{ app.user.displayName }}. You are already registered and logged in.</p>
+        <p><a href="{{ path('user.logout') }}">Log out</a></p>
         <p><a href="{{ path('user.view', {'id': app.user.id}) }}">View profile</a></p>
 
     {% else %}
@@ -61,7 +61,7 @@
                     <button type="submit" class="btn bt-sign">Register</button>
                 </div>
             </div>
-             <h3 class="infosign2">Already have an account ? <a href="{{ path('user.login') }}">Sign in now</a></h3>
+             <h3 class="infosign2">Already have an account ? <a href="{{ path('user.login') }}">Log in now</a></h3>
 
 
         </form>

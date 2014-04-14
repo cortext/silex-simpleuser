@@ -39,7 +39,7 @@
                     <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> List users</a></li>
                     {% endif %}
                     {% if app.user %}
-                        <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
+                        <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Log out</a></li>
                  
 
                         <li id="user-name">
@@ -50,7 +50,7 @@
                         <li class="divider-vertical"></li>
                         
                     {% else %}
-                        <!--<li id="sign"><a href="{{ path('user.login') }}">Sign in</a></li>-->
+                        <!--<li id="sign"><a href="{{ path('user.login') }}">Log in</a></li>-->
                         <li class="divider-vertical"></li>
                         <li id="create-account"><a href="{{ path('user.register') }}">Create account</a></li>
                     {% endif %}
