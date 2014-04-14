@@ -27,9 +27,9 @@
         <div class="profile">
             <div class='table'>
                     {% for key,item in profile %}
-                 
-                   <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
-                 
+                        {% if key != "id" %}
+                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
+                        {% endif %}
                     {% endfor %}
             </div>
         
