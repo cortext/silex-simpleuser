@@ -42,10 +42,10 @@
                         <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
                  
 
-                        <li id="user-name"> <a href="{{ path('user') }}">                       
-
-                        <i class="icon-user"></i><img src="{{ imageUrl }}" width="40" height="40"/> {{ app.user.displayName }}</a></li>
-
+                        <li id="user-name">
+                         <a href="{{ path('user') }}">                       
+                            <i class="icon-user"></i>{% if imageUrl %} <img src=" {{ imageUrl }}" width="40" height="40"/> {% endif %} {{ app.user.displayName }}</a>
+                        </li>
 
                         <li class="divider-vertical"></li>
                         
