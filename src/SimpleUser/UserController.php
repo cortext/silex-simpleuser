@@ -111,6 +111,7 @@ class UserController
             'name' => $request->request->get('name'),
             'email' => $request->request->get('email'),
             'callback' => $request->query->get('callback'),
+            'imageUrl' =>null
         ));
     }
     
