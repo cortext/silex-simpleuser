@@ -132,10 +132,11 @@ class UserController
 
             //create user email
             $messageContent = "Hi,
-                This is an automated message from Cortext Authentification : you requested a password change. Please find below your new password : 
-                \n_________________________________________________________\n '
-            .$newPass.'__________________________________________________\n\n
-              Make sure you change it the nexte time you log into Cortext ! \n\n regards, the Cortext Administration Team";
+this is an automated message from Cortext Authentification : you requested a password change. 
+Please find below your new password :\n\n________________\n\n".$newPass."\n________________\n\n
+Make sure you change it the next time you log into Cortext !\n\n
+\n\n Best regards,
+\n the Cortext Administration Team";
 
             $message = \Swift_Message::newInstance()
             ->setSubject('[Cortext] New Password')
