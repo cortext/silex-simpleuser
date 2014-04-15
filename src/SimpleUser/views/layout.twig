@@ -27,7 +27,13 @@
                 <!--<a class="brand" href="{{ path('homepage') }}"> <img alt="cortext platform logo" src="/images/logo_cortext.png">-->
                 <ul>
                  <li class="home"><a href="#"><img src="/images/home.png" alt="#"/></a></li></a>
-                 <li class="dashboard"><a class="name" href="#">profil</a></li>
+                <li class="dashboard">
+                    <a class="name" href="/dashboard">dashboard</a>
+                </li>
+                 <li class="user">
+                    <span class="type">user</span>
+                    <a class="name" href="/">register</a>
+                </li>
                 </ul>
             </nav>
             </div>
@@ -52,7 +58,7 @@
                     {% else %}
                         <!--<li id="sign"><a href="{{ path('user.login') }}">Log in</a></li>-->
                         <li class="divider-vertical"></li>
-                        <li id="create-account"><a href="{{ path('user.register') }}">Create account</a></li>
+                        <li id="create-account"><a href="{{ path('user.login') }}">Sign in</a></li>
                     {% endif %}
                 
                 </div>  
