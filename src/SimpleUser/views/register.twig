@@ -9,8 +9,8 @@
 
     {% if app.user %}
         <p>Hello, {{ app.user.displayName }}. You are already registered and logged in.</p>
-        <p><a href="{{ path('user.logout') }}">Log out</a></p>
-        <p><a href="{{ path('user.view', {'id': app.user.id}) }}">View profile</a></p>
+        <p id="log-out"><a href="{{ path('user.logout') }}">log out</a></p>
+        <p id="view"><a href="{{ path('user.view', {'id': app.user.id}) }}">view profile</a></p>
 
     {% else %}
         <div class="page-header">
