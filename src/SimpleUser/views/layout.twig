@@ -26,7 +26,7 @@
 
                 <!--<a class="brand" href="{{ path('homepage') }}"> <img alt="cortext platform logo" src="/images/logo_cortext.png">-->
                 <ul>
-                 <li class="home"><a href="#"><img src="/images/home.png" alt="#"/></a></li></a>
+                 <li class="home"><a title="back" href="{{ app.request.get('callback_url', path('homepage')) }}"><img src="/images/home.png" alt="#"/></a></li></a>
                 <li class="dashboard">
                     <a class="name" href="/dashboard">dashboard</a>
                 </li>
