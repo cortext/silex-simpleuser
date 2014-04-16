@@ -18,7 +18,10 @@
 
         <label class="control-label" for="input-name">
             <a href="http://gravatar.com">change gravatar image</a>
-            </label>
+        </label>
+        {% if app.request.get('callback_url') %}
+            <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
+        {% endif %}
 
         {% if error %}
         <div class="alert alert-error">{{ error|nl2br }}</div>

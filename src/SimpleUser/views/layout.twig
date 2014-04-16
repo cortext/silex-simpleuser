@@ -32,7 +32,7 @@
                 </li>
                  <li class="user">
                     <span class="type">user</span>
-                    <a class="name" href="/">register</a>
+                    <a class="name" href="/">{{ app.request.get(('_route'))|split('.')|last }}</a>
                 </li>
                 </ul>
             </nav>
@@ -58,20 +58,22 @@
                     {% else %}
                         <!--<li id="sign"><a href="{{ path('user.login') }}">Log in</a></li>-->
                         <li class="divider-vertical"></li>
-                        <li id="create-account"><a href="{{ path('user.login') }}">Sign in</a></li>
+                        <li id="create-account"><a href="{{ path('user.login') }}">Log in</a></li>
                     {% endif %}
                 
                 </div>  
 
-        {% if app.session.flashbag.has('alert') %}
-            {% for flashMessage in app.session.flashbag.get('alert') %}
-                <div class="alert">{{ flashMessage }}</div>
-            {% endfor %}
-        {% endif %}
-
+        
  </div><!-- #header -->
        
-        <div id="content2">{% block content %}{% endblock %}</div>
+        <div id="content2">
+            {% if app.session.flashbag.has('alert') %}
+                {% for flashMessage in app.session.flashbag.get('alert') %}
+                    <div class="alert">{{ flashMessage }}</div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
     </div>
     </body>
 </html>

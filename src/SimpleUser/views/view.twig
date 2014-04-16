@@ -17,8 +17,9 @@
         <div class="muted">
         Registered {{ user.timeCreated|date('F j, Y') }}
         </div>
-
-        <div id="link-user"><a href="#">go to profil</a></div>
+        {% if app.request.get('callback_url') %}
+            <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
+        {% endif %}
 
     </div>
 
