@@ -86,7 +86,7 @@
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn save-info">save new informations</button>
-                <a style="margin-left: 10px;" href="{{ path('user.view', {'id': user.id}) }}">or back to profile</a>
+                <a style="margin-left: 10px;" href="{{ path('user.view', {'id': user.id, 'callback_url' :app.request.get('callback_url')}) }}">or back to profile</a>
             </div>
         </div>
 
