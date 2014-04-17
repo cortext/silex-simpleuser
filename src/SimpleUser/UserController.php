@@ -86,7 +86,7 @@ class UserController
             try {
                 $user = $this->createUserFromRequest($request);
                 $this->userManager->insert($user);
-                $app['session']->getFlashBag()->set('alert', 'Account created');
+                $app['session']->getFlashBag()->set('alert', 'account created');
 
                 // Log the user in to the new account.
                 if (null !== ($current_token = $app['security']->getToken())) {
