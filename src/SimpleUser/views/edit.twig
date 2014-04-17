@@ -4,6 +4,10 @@
 
 {% block content %}
 
+{% if error %}
+    <div class="alert alert-error">{{ error|nl2br }}</div>
+{% endif %}
+
 <div class="media">
 
     <div class="media-user-info">
@@ -23,9 +27,7 @@
             <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
         {% endif %}
 
-        {% if error %}
-        <div class="alert alert-error">{{ error|nl2br }}</div>
-        {% endif %}
+      
 
         <form class="form-horizontal" method="POST">
 
