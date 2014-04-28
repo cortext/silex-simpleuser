@@ -86,6 +86,7 @@ class UserController
             try {
                 $user = $this->createUserFromRequest($request);
                 $this->userManager->insert($user);
+                $callback_url = $request->request->get('callback');
                 $app['session']->getFlashBag()->set('alert', 'account created');
 
                 // Log the user in to the new account.
@@ -95,15 +96,32 @@ class UserController
                     $app['security']->setToken($token);
                 }
 
-                if($request->request->get('callback'))
-                  return $app->redirect($request->request->get('callback'));
+                $message = \Swift_Message::newInstance()
+                ->setSubject('[Cortext] Welcome')
+                ->setFrom(array('webmaster@cortext.fr'))
+                ->setTo(array($user->getEmail()))
+                ->setBcc(array('webmaster@cortext.fr'))
+                ->setBody($app['twig']->render('@user/emailRegister.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
+
+                
+                if( $app['mailer']->send($message))//send email  
+                {
+                    $app['monolog']->info("Sended mail : ".$message);
+                }         
+                else
+                {
+                    $app['monolog']->error("ERROR while send registration mail : ".$message);
+                }
+                    
+                if($callback_url)
+                  return $app->redirect($callback_url);
                 else
                   return $app->redirect($app['url_generator']->generate('user.view', array('id' => $user->getId())));
 
             } catch (InvalidArgumentException $e) {
                 $error = $e->getMessage();
             }
-        }
+        }  
         //die(print_r($request->query, true));
         return $app['twig']->render('@user/register.twig', array(
             'layout_template' => $this->layoutTemplate,
