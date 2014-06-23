@@ -169,10 +169,12 @@ Make sure you change it the next time you log into Cortext !\n\n
             if( $app['mailer']->send($message))             
             {
                 //display confirmation
+                $app['monolog']->info("Sended fogorgot passwd mail to ".$email);
                 return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true,'email'=>$email,  'layout_template' => $this->layoutTemplate ));
             }
             else 
             {
+                $app['monolog']->error("ERROR while send forgot passwd mail to : ".$email);
                 throw new ErrorException('Mail has encountered an error while sending the password, please contact admin.');
                 return 1;
             }
