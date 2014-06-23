@@ -147,7 +147,7 @@ class UserController
             //generate the new password$request->get('email')
            $user =  $this->userManager->loadUserByUsername($email);
            $newPass = $this->userManager->resetUserPassword($user);
-
+           
             //create user email
             $messageContent = "Hi,
 this is an automated message from Cortext Authentification : you requested a password change. 
@@ -169,7 +169,7 @@ Make sure you change it the next time you log into Cortext !\n\n
             if( $app['mailer']->send($message))             
             {
                 //display confirmation
-                $app['monolog']->info("Sended fogorgot passwd mail to ".$email);
+                $app['monolog']->info("Sended forgot passwd mail to ".$email);
                 return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true,'email'=>$email,  'layout_template' => $this->layoutTemplate ));
             }
             else 
