@@ -86,7 +86,8 @@ class UserController
             try {
                 $user = $this->createUserFromRequest($request);
                 $this->userManager->insert($user);
-                $app['session']->getFlashBag()->set('alert', 'Account created.');
+                $callback_url = $request->request->get('callback');
+                $app['session']->getFlashBag()->set('alert', 'account created');
 
                 // Log the user in to the new account.
                 if (null !== ($current_token = $app['security']->getToken())) {
@@ -95,15 +96,32 @@ class UserController
                     $app['security']->setToken($token);
                 }
 
-                if($request->request->get('callback'))
-                  return $app->redirect($request->request->get('callback'));
+                $message = \Swift_Message::newInstance()
+                ->setSubject('[Cortext] Welcome')
+                ->setFrom(array('webmaster@cortext.fr'))
+                ->setTo(array($user->getEmail()))
+                ->setBcc(array('webmaster@cortext.fr'))
+                ->setBody($app['twig']->render('@user/emailRegister.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
+
+                
+                if( $app['mailer']->send($message))//send email  
+                {
+                    $app['monolog']->info("Sended mail : ".$message);
+                }         
+                else
+                {
+                    $app['monolog']->error("ERROR while send registration mail : ".$message);
+                }
+                    
+                if($callback_url)
+                  return $app->redirect($callback_url);
                 else
                   return $app->redirect($app['url_generator']->generate('user.view', array('id' => $user->getId())));
 
             } catch (InvalidArgumentException $e) {
                 $error = $e->getMessage();
             }
-        }
+        }  
         //die(print_r($request->query, true));
         return $app['twig']->render('@user/register.twig', array(
             'layout_template' => $this->layoutTemplate,
@@ -111,6 +129,7 @@ class UserController
             'name' => $request->request->get('name'),
             'email' => $request->request->get('email'),
             'callback' => $request->query->get('callback'),
+            'imageUrl' =>null
         ));
     }
     
@@ -128,13 +147,14 @@ class UserController
             //generate the new password$request->get('email')
            $user =  $this->userManager->loadUserByUsername($email);
            $newPass = $this->userManager->resetUserPassword($user);
-
+           
             //create user email
             $messageContent = "Hi,
-                This is an automated message from Cortext Authentification : you requested a password change. Please find below your new password : 
-                \n_________________________________________________________\n '
-            .$newPass.'__________________________________________________\n\n
-              Make sure you change it the nexte time you log into Cortext ! \n\n regards, the Cortext Administration Team";
+this is an automated message from Cortext Authentification : you requested a password change. 
+Please find below your new password :\n\n________________\n\n".$newPass."\n________________\n\n
+Make sure you change it the next time you log into Cortext !\n\n
+\n\n Best regards,
+\n the Cortext Administration Team";
 
             $message = \Swift_Message::newInstance()
             ->setSubject('[Cortext] New Password')
@@ -149,10 +169,12 @@ class UserController
             if( $app['mailer']->send($message))             
             {
                 //display confirmation
+                $app['monolog']->info("Sended forgot passwd mail to ".$email);
                 return $app['twig']->render('@user/forgotPassword.twig', array('requestSent'=>true,'email'=>$email,  'layout_template' => $this->layoutTemplate ));
             }
             else 
             {
+                $app['monolog']->error("ERROR while send forgot passwd mail to : ".$email);
                 throw new ErrorException('Mail has encountered an error while sending the password, please contact admin.');
                 return 1;
             }
@@ -283,7 +305,7 @@ class UserController
             'error' => implode("\n", $errors),
             'user' => $user,
             'available_roles' => array('ROLE_USER', 'ROLE_ADMIN'),
-            'image_url' => $this->getGravatarUrl($user->getEmail()),
+            'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ));
     }
 

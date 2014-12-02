@@ -2,39 +2,76 @@
 <html>
     <head>
         {% block head %}
-            <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+         <link rel="stylesheet" href="{{ app.request.basePath }}/css/reset.css">
+           <link rel="stylesheet" href="{{ app.request.basePath }}/css/main.css">
+           <link rel="stylesheet" href="{{ app.request.basePath }}/css/login.css"> 
+
             <title>{% block title %}{% endblock %}</title>
-            <style type="text/css">
-                body { padding: 10px; }
-            </style>
+           
         {% endblock %}
     </head>
     <body>
-        <div class="navbar">
+
+     <div id="content">  
+
+        <div id="header">
+            <div id="menu">
+            <nav id="path">
+          
             <div class="navbar-inner">
-                <a class="brand" href="{{ path('homepage') }}"><img alt="cortext platform logo" src="/images/logo_cortext.png"></a>
-                <ul class="nav">
+
+
+                <!--<a class="brand" href="{{ path('homepage') }}"> <img alt="cortext platform logo" src="/images/logo_cortext.png">-->
+                <ul>
+                 <li class="home"><a title="back" href="{{ app.request.get('callback_url', path('homepage')) }}"><img src="/images/home.png" alt="#"/></a></li></a>
+                <li class="dashboard">
+                    <a class="name" href="/dashboard">dashboard</a>
+                </li>
+                 <li class="user">
+                    <span class="type">user</span>
+                    <a class="name" href="/">{{ app.request.get(('_route'))|split('.')|last }}</a>
+                </li>
+                </ul>
+            </nav>
+            </div>
+
+                <div id="user" class="nav">
                      {% if is_granted('ROLE_ADMIN') %}
+
+
                     <li><a href="{{ path('user.list') }}"><i class="icon-list"></i> List users</a></li>
-                    <li class="divider-vertical"></li>
                     {% endif %}
                     {% if app.user %}
-                        <li><a href="{{ path('user') }}"><i class="icon-user"></i> {{ app.user.displayName }}</a></li>
+                        <li id="login-out"><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Log out</a></li>
+                 
+
+                        <li id="user-name">
+                         <a href="{{ path('user') }}">                       
+                            <i class="icon-user"></i>{% if imageUrl %} <img src=" {{ imageUrl }}" width="40" height="40"/> {% endif %} {{ app.user.displayName }}</a>
+                        </li>
+
                         <li class="divider-vertical"></li>
-                        <li><a href="{{ path('user.logout') }}"><i class="icon-off"></i> Sign out</a></li>
+                        
                     {% else %}
-                        <li><a href="{{ path('user.login') }}">Sign in</a></li>
+                        <!--<li id="sign"><a href="{{ path('user.login') }}">Log in</a></li>-->
                         <li class="divider-vertical"></li>
-                        <li><a href="{{ path('user.register') }}">Create account</a></li>
+                        <li id="create-account"><a href="{{ path('user.login') }}">Log in</a></li>
                     {% endif %}
-                </ul>
-            </div>
+                
+                </div>  
+
+        
+ </div><!-- #header -->
+       
+        <div id="content-auth">
+            {% if app.session.flashbag.has('alert') %}
+                {% for flashMessage in app.session.flashbag.get('alert') %}
+                    <div class="alert">{{ flashMessage }}</div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
         </div>
-        {% if app.session.flashbag.has('alert') %}
-            {% for flashMessage in app.session.flashbag.get('alert') %}
-                <div class="alert">{{ flashMessage }}</div>
-            {% endfor %}
-        {% endif %}
-        <div id="content">{% block content %}{% endblock %}</div>
+    </div>
     </body>
 </html>

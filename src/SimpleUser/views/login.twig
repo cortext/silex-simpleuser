@@ -1,8 +1,10 @@
 {% extends layout_template  %}
 
-{% block title %}Sign in{% endblock %}
+{% block title %}Log in{% endblock %}
 
 {% block content %}
+
+<div class="media border-media">
 
     {% if app.user %}
         <p>Hi  {{ app.user.displayName }}.</p>
@@ -13,11 +15,9 @@
 
     {% else %}
         <div class="page-header">
-           
-            <h1>
-               Cortext Platform -  Sign in<br/>
-                <small>Don't have an account? <a href="{{ path('user.register') }}">Register now.</a></small>
-            </h1>
+
+            <h2 class="info-sign">Cortext Platform -  Log in</h2>
+
         </div>
 
         {% if error %}
@@ -27,37 +27,40 @@
         <form class="form-horizontal" method="POST" action="{{ path('user.login_check') }}">
 
             <div class="control-group">
-                <label class="control-label" for="inputEmail">Email</label>
                 <div class="controls">
+                    <label class="control-label" for="inputEmail">Email</label>
                     <input name="_username" type="email" id="inputEmail" placeholder="Email" required value="{{ last_username }}">
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="inputPassword">Password</label>
                 <div class="controls">
+                    <label class="control-label" for="inputPassword">Password</label>
                     <input name="_password" type="password" id="inputPassword" required placeholder="Password">
                     <small> <a href="{{ path('user.forgotPassword') }}">Forgot your password ?</a></small>
                 </div>
             </div>
 
-            {% if allowRememberMe %}
+            
+            <div class="control-group">
+                <div class="controls log-form">
+                    <button type="submit" class="btn bt-sign">Log in</button>
+                </div>
+
+                {% if allowRememberMe %}
                 <div class="control-group">
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="_remember_me" value="true" checked> Remember me
-                        </label>
+                    <div class="controls log-form"><label class="case-label">Remember me </label>
+                            <input type="checkbox" name="_remember_me" class="case" value="true" checked>
                     </div>
                 </div>
             {% endif %}
 
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn">Sign in</button>
-                </div>
+                <!-- <h3 class="infosign">Don't have an account ? <a href="{{ path('user.register') }}">Register now</a></h3> -->
+
             </div>
 
         </form>
 
     {% endif %}
+   </div> 
 {% endblock %}
