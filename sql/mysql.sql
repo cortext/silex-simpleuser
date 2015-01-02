@@ -32,6 +32,6 @@ CREATE TABLE IF NOT EXISTS `users_infos` (
   `user_location` VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL,
   `user_website` VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL,
   `user_birthdate` date DEFAULT NULL,
-  `user_last_connexion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_last_connexion` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
