@@ -27,12 +27,11 @@ CREATE TABLE IF NOT EXISTS `users` (
  * 
  */
 CREATE TABLE IF NOT EXISTS `users_infos` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) UNSIGNED NOT NULL,
   `user_description` TEXT CHARACTER SET utf8 DEFAULT NULL,
   `user_location` VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL,
   `user_website` VARCHAR(255) CHARACTER SET utf8 DEFAULT NULL,
   `user_birthdate` date DEFAULT NULL,
   `user_last_connexion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
