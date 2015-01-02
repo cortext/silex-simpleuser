@@ -30,7 +30,7 @@
         <div class="profile">
             <div class='table'>
                     {% for key,item in profile %}
-                        {% if key != "id" %}
+                        {% if key != "id" and key != "last_connexion" %}
                             <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
                         {% endif %}
                     {% endfor %}

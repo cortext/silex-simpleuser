@@ -18,6 +18,11 @@ class User implements UserInterface, \Serializable
     protected $roles = array();
     protected $name = '';
     protected $timeCreated;
+    protected $description;
+    protected $location;
+    protected $website;
+    protected $birthdate;
+    protected $last_connexion; 
 
     /**
      * Constructor.
@@ -29,6 +34,7 @@ class User implements UserInterface, \Serializable
         $this->email = $email;
         $this->timeCreated = time();
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        //$this->last_connexion = time();
     }
 
     /**
@@ -242,6 +248,132 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Get the location of the user.
+     *
+     * @return string The location.
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the location of the user.
+     *
+     * @param string $location
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * Get the description of the user.
+     *
+     * @return string The description.
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the description of the user.
+     *
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get the website of the user.
+     *
+     * @return string The website.
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set the website of the user.
+     *
+     * @param string $website
+     */
+    public function setWebsite($website)
+    {
+        /* Reformatage de l'URL s'il manque le protocole */
+        if ( substr( $website, 0, 7 ) != "http://" && 
+             substr( $website, 0, 8 ) != "https://" && 
+             substr( $website, 0, 2 ) != "//" && 
+             $website != "" ) {
+            $website = "http://" . $website;
+        }
+        $this->website = $website;
+    }
+
+    /**
+     * Get the birthdate of the user.
+     *
+     * @return text The birthdate.
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+
+    /**
+     * Set the birthdate of the user.
+     *
+     * @param text $birthdate
+     */
+    public function setBirthdate($birthdate)
+    {
+        if ( $birthdate == "0000-00-00" ) {
+            $birthdate = "";
+        }
+        $this->birthdate = $birthdate;
+    }
+
+    /**
+     * Get the last connexion of the user.
+     *
+     * @return int The last connexion.
+     */
+    public function getLastConnexion()
+    {
+        return $this->last_connexion;
+    }
+
+    /**
+     * Set the last connexion of the user.
+     *
+     * @param int $last_connexion
+     */
+    public function setLastConnexion($last_connexion)
+    {
+        $this->last_connexion = $last_connexion;
+    }
+
+    /**
+     * Get the pourcentage of how many this user information are complete
+     * Function return a value between 0 and 1
+     */
+    public function getPrcComplete()
+    {
+        $cpt = 0; $tot = 0;
+        $cpt += ( $this->getName() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getEmail() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getDescription() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getLocation() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getWebsite() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getBirthdate() == "" ? 1 : 0 ); $tot++;
+        return 1 - $cpt / $tot ;
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is a no-op, since we never store the plain text credentials in this object.
@@ -303,6 +435,10 @@ class User implements UserInterface, \Serializable
 
         if (strlen($this->getName()) > 100) {
             $errors['name'] = 'Name can\'t be longer than 100 characters.';
+        }
+
+        if ( !preg_match("/^(19|20)[0-9]{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->getBirthdate()) && $this->getBirthdate() != "" ) {
+            $errors['birthdate'] = 'Birthdate is invalid.';
         }
 
         return $errors;

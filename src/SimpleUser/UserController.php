@@ -129,7 +129,7 @@ class UserController
             'name' => $request->request->get('name'),
             'email' => $request->request->get('email'),
             'callback' => $request->query->get('callback'),
-            'imageUrl' =>null
+            'imageUrl' => null
         ));
     }
     
@@ -225,7 +225,7 @@ Make sure you change it the next time you log into Cortext !\n\n
     {
         $user = $this->userManager->getUser($id);
         $userProfile = $this->userManager->getUserProfile($id);
-      //  die(print_r($userInfos));
+        //die(print_r($userProfile));
         if (!$user) {
             throw new NotFoundHttpException('No user was found with that ID.');
         }
@@ -259,7 +259,8 @@ Make sure you change it the next time you log into Cortext !\n\n
     }
 
     /**
-     * Edit user action.
+     * Edit user action. This function checks if request is valid, if new fields are valid, and then update
+     * user in DB, before outputting a result page depending of the result of the action.
      *
      * @param Application $app
      * @param Request $request
@@ -269,46 +270,107 @@ Make sure you change it the next time you log into Cortext !\n\n
      */
     public function editAction(Application $app, Request $request, $id)
     {
+        /* Trace edition */
+        $app['monolog']->debug("TRACE:editAction:edit:".$id);
+
+        /* Initialize errors list */
         $errors = array();
 
+        /* Get the user from the DB, and put it in an object */
         $user = $this->userManager->getUser($id);
 
+        /* If user Id is invalid and user doesn't exists, throw exception */
         if (!$user) {
+            $app['monolog']->debug("TRACE:editAction:userNotFound:".$id);
             throw new NotFoundHttpException('No user was found with that ID.');
         }
 
+        /* Check if request method is POST, so from a form */
         if ($request->isMethod('POST')) {
+
+            /* Update fields of the objects via his setters, with data from the post request */
+
+            /* User Name */
+            if ( $user->getName() != $request->request->get('name') ) $app['monolog']->debug("TRACE:editAction:modification:name:".$user->getName()."=>".$request->request->get('name').":".$id);
             $user->setName($request->request->get('name'));
+
+            /* User Email */
+            if ( $user->getEmail() != $request->request->get('email') ) $app['monolog']->debug("TRACE:editAction:modification:email:".$user->getEmail()."=>".$request->request->get('email').":".$id);
             $user->setEmail($request->request->get('email'));
+
+            /* User Password */
             if ($request->request->get('password')) {
                 if ($request->request->get('password') != $request->request->get('confirm_password')) {
                     $errors['password'] = 'Passwords don\'t match.';
                 } else {
+                    $app['monolog']->debug("TRACE:editAction:modification:password:".$id);
                     $this->userManager->setUserPassword($user, $request->request->get('password'));
                 }
             }
+
+            /* User Roles */
             if ($app['security']->isGranted('ROLE_ADMIN') && $request->request->has('roles')) {
+                $app['monolog']->debug("TRACE:editAction:modification:roles:".$id);
                 $user->setRoles($request->request->get('roles'));
             }
 
+            /* User Location */
+            if ( $user->getLocation() != $request->request->get('location') ) $app['monolog']->debug("TRACE:editAction:modification:location:".$user->getLocation()."=>".$request->request->get('location').":".$id);
+            $user->setLocation($request->request->get('location'));
+
+            /* User Description */
+            if ( $user->getDescription() != $request->request->get('description') ) $app['monolog']->debug("TRACE:editAction:modification:description:".$id);
+            $user->setDescription($request->request->get('description'));
+
+            /* User Website */
+            if ( $user->getWebsite() != $request->request->get('website') ) $app['monolog']->debug("TRACE:editAction:modification:website:".$id);
+            $user->setWebsite($request->request->get('website'));
+
+            /* User Birthdate */
+            if ( $user->getBirthdate() != $request->request->get('birthdate') ) $app['monolog']->debug("TRACE:editAction:modification:birthdate:".$user->getBirthdate()."=>".$request->request->get('birthdate').":".$id);
+            $user->setBirthdate($request->request->get('birthdate'));
+
+            /* Call to the validate function of the user, to check if the user is correct */
             $errors += $this->userManager->validate($user);
 
+            /* Check if any error has been found in the new fields */
             if (empty($errors)) {
+
+                /* Trace user update */
+                $app['monolog']->debug("TRACE:editAction:updateDB:".$id);
+
+                /* Update the user in DB only if no error */
                 $this->userManager->update($user);
+
+                /* Prepare result message */
                 $msg = 'Saved account information.' . ($request->request->get('password') ? ' Changed password.' : '');
+
+                /* Output result message */
                 $app['session']->getFlashBag()->set('alert', $msg);
+            } else {
+                /* There is errors in new fields, log messages  */
+                ob_start(); var_dump($errors);
+                $app['monolog']->debug("TRACE:editAction:errors:".ob_get_clean().":".$id);
+
+                /* If errors tell that nothing is saved */
+                $errors['hint'] = "Account information was not saved.";
             }
         }
 
+        /* Render the result page with twig and return the result web page */
         return $app['twig']->render('@user/edit.twig', array(
             'layout_template' => $this->layoutTemplate,
             'error' => implode("\n", $errors),
             'user' => $user,
             'available_roles' => array('ROLE_USER', 'ROLE_ADMIN'),
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
+            'prcComplete' => (int)($user->getPrcComplete()*100),
         ));
     }
 
+    /**
+     * Que fait cette fonction ?
+     */
     public function listAction(Application $app, Request $request)
     {
         $limit = $request->get('limit') ?: 50;

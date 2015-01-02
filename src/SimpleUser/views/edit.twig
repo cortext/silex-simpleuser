@@ -9,7 +9,6 @@
 {% endif %}
 
 <div class="media">
-
     <div class="media-user-info">
 
             <div class="controls gravatar">
@@ -26,28 +25,26 @@
         {% if app.request.get('callback_url') %}
             <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
         {% endif %}
-
-      
-
-        <form class="form-horizontal" method="POST">
-
-        
+        <div class="prc-complete">
+            Your profile is {{ prcComplete }}% complete !
+        </div>
     </div>
-
-        <h2 class="user-information">User informations</h2>
+    <form class="form-horizontal" method="POST">
+    <div>
+        <h2 class="user-information">User credentials</h2>
 
 
         <div class="control-group">
             <div class="controls">
                 <label class="control-label" for="input-name">Name</label>
-                <input name="name" type="text" id="input-name" placeholder="Name" value="{{ user.name }}">
+                <input name="name" type="text" id="input-name" placeholder="Name" value="{{ user.name }}" class="{% if user.name == '' %}missing{% endif %}">
                 <span class="help-inline">Shown publicly</span>
             </div>
         </div>
 
         <div class="control-group">
             <div class="controls">       
-             <label class="control-label" for="input-email">Email</label>
+                <label class="control-label required-field" for="input-email">Email</label>
                 <input name="email" type="email" id="input-email" placeholder="Email" required value="{{ user.email }}">
                 <span class="help-inline">Never shared</span>
             </div>
@@ -92,6 +89,59 @@
             </div>
         </div>
 
+    </div>
+    <div>
+        <h2 class="user-information">User informations</h2>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-description">Description</label>
+                <textarea rows="5" cols="50" name="description" placeholder="Short description" id="input-description" class="{% if user.description == '' %}missing{% endif %}">{{ user.description }}</textarea>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-location">Location</label>
+                <input name="location" type="text" id="input-location" placeholder="City, Country" value="{{ user.location }}" class="{% if user.location == '' %}missing{% endif %}">
+                {% if user.location %}
+                <span class="help-inline">
+                    <a href="https://www.google.fr/maps/search/{{ user.location }}" target="_blank" alt="Map of {{ user.location }}" title="Map of {{ user.location }}">map</a>
+                </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-website">Website</label>
+                <input name="website" type="text" id="input-website" placeholder="http://www.mywebsite.com" value="{{ user.website }}" class="{% if user.website == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-birthdate">Birhtdate</label>
+                <input name="birthdate" type="text" id="input-birthdate" placeholder="YYYY-MM-DD" value="{{ user.birthdate }}" maxlength="10" class="{% if user.birthdate == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="control-group">
+                <div class="controls">
+                    <label class="control-label" for="input-last-connexion">Last connexion</label>
+                    <input name="last-connexion" type="text" id="input-last-connexion" value="" disabled>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn save-info">save new informations</button>
+                <a style="margin-left: 10px;" href="{{ path('user.view', {'id': user.id, 'callback_url' :app.request.get('callback_url')}) }}">or back to profile</a>
+            </div>
+        </div>
+    </div>
     </form>
 </div>
 {% endblock %}

@@ -98,6 +98,11 @@ class UserManager implements UserProviderInterface
      */
     protected function hydrateUser(array $data)
     {
+        /* Log of inputs data */
+        $this->app['monolog']->debug("TRACE:hydrateUser:userId:".$data['id']);
+        ob_start(); var_dump($data);
+        $this->app['monolog']->debug("TRACE:hydrateUser:data:".ob_get_clean());
+
         $user = new User($data['email']);
 
         $user->setId($data['id']);
@@ -109,6 +114,17 @@ class UserManager implements UserProviderInterface
             $user->setRoles($roles);
         }
         $user->setTimeCreated($data['time_created']);
+
+        /* Fields of table users_infos */
+        $user->setLocation($data['location']);
+        $user->setDescription($data['description']);
+        $user->setWebsite($data['website']);
+        $user->setBirthdate($data['birthdate']);
+        $user->setLastConnexion($data['last_connexion']);
+
+        /* Log of ouput user to compare */
+        ob_start(); var_dump($user);
+        $this->app['monolog']->debug("TRACE:hydrateUser:user:".ob_get_clean());
 
         return $user;
     }
@@ -226,12 +242,20 @@ class UserManager implements UserProviderInterface
      */
     public function getUserProfile($id)
     {
+        /* Log */
+        $this->app['monolog']->debug("TRACE:getUserProfile:userId:".$id);
+
         $user = $this->getUser($id);
         return array(
-            'id' =>$user->getId(),
+            'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' =>  $user->getEmail(),
-            'name' => $user->getName()
+            'name' => $user->getName(),
+            'location' => $user->getLocation(),
+            'description' => $user->getDescription(),
+            'website' => $user->getWebsite(),
+            'birthdate' => $user->getBirthdate(),
+            'last_connexion' => $user->getLastConnexion()
           );
     }
 
@@ -240,19 +264,30 @@ class UserManager implements UserProviderInterface
      */
     public function getUsersListProfile()
     {
+        /* Log */
+        $this->app['monolog']->debug("TRACE:getUsersListProfile");
+
         $userList = array();
 
         foreach ($this->findBy(array()) as $id => $user) {
             array_push($userList, array(
-            'id' =>$user->getId(),
+            'id' => $user->getId(),
             'username' => $user->getUsername(),
             'email' =>  $user->getEmail(),
-            'name' => $user->getName()
+            'name' => $user->getName(),
+            'location' => $user->getLocation(),
+            'description' => $user->getDescription(),
+            'website' => $user->getWebsite(),
+            'birthdate' => $user->getBirthdate(),
+            'last_connexion' => $user->getLastConnexion()
           ));
         }
+
+        /* Log the number of profile found */
+        $this->app['monolog']->debug("TRACE:getUsersListProfile:listSize:".count($userList));
+
         return $userList;
     }
-   
 
     /**
      * Test whether the current user is authenticated.
@@ -352,7 +387,7 @@ class UserManager implements UserProviderInterface
     }
 
     /**
-     * Get SQL query fragment common to both find and count querires.
+     * Get SQL query fragment common to both find and count queries.
      *
      * @param array $criteria
      * @return array An array of SQL and query parameters, in the form array($sql, $params)
@@ -361,7 +396,7 @@ class UserManager implements UserProviderInterface
     {
         $params = array();
 
-        $sql = 'FROM users ';
+        $sql = 'FROM users LEFT JOIN users_infos ON id = user_id ';
 
         $first_crit = true;
         foreach ($criteria as $key => $val)
@@ -412,6 +447,22 @@ class UserManager implements UserProviderInterface
         $user->setId($this->conn->lastInsertId());
 
         $this->identityMap[$user->getId()] = $user;
+
+        /* Log created user id */
+        $this->app['monolog']->debug("TRACE:insert:userId:".$user->getId());
+
+        $sql = 'INSERT INTO users_infos (user_id, description, location, website, birthdate, last_connexion) VALUES (:user_id, :description, :location, :website, :birthdate, :last_connexion) ';
+
+        $params = array (
+            'user_id' => $user->getId(),
+            'description' => $user->getDescription(),
+            'location' => $user->getLocation(),
+            'website' => $user->getWebsite(),
+            'birthdate' => $user->getBirthdate(),
+            'last_connexion' => $user->getLastConnexion()
+        );
+
+        $this->conn->executeUpdate($sql, $params);
     }
 
     /**
@@ -421,6 +472,9 @@ class UserManager implements UserProviderInterface
      */
     public function update(User $user)
     {
+        /* Log */
+        $this->app['monolog']->debug("TRACE:update:userId:".$user->getId());
+
         $sql = 'UPDATE users
             SET email = :email
             , password = :password
@@ -441,6 +495,25 @@ class UserManager implements UserProviderInterface
         );
 
         $this->conn->executeUpdate($sql, $params);
+
+        $sql = 'UPDATE users_infos
+            SET location = :location
+            , description = :description
+            , website = :website
+            , birthdate = :birthdate
+            , last_connexion = :last_connexion
+            WHERE user_id = :user_id';
+
+        $params = array(
+            'location' => $user->getLocation(),
+            'description' => $user->getDescription(),
+            'website' => $user->getWebsite(),
+            'birthdate' => $user->getBirthdate(),
+            'last_connexion' => $user->getLastConnexion(),
+            'user_id' => $user->getId(),
+        );
+
+        $this->conn->executeUpdate($sql, $params);
     }
 
     /**
@@ -453,6 +526,8 @@ class UserManager implements UserProviderInterface
         $this->clearIdentityMap($user);
 
         $this->conn->executeUpdate('DELETE FROM users WHERE id = ?', array($user->getId()));
+
+        $this->conn->executeUpdate('DELETE FROM users_infos WHERE user_id = ?', array($user->getId()));
     }
 
     /**
