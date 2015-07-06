@@ -23,6 +23,11 @@ class User implements UserInterface, \Serializable
     protected $website;
     protected $birthdate;
     protected $last_connexion; 
+    protected $city;
+    protected $country;
+    protected $institution;
+    protected $activity_domain;
+    protected $research_domain;
 
     /**
      * Constructor.
@@ -358,6 +363,106 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Get the instituion of the user.
+     *
+     * @return string The institution.
+     */
+    public function getInstitution()
+    {
+        return $this->institution;
+    }
+
+    /**
+     * Set the institution of the user.
+     *
+     * @param string $institution
+     */
+    public function setInstitution($institution)
+    {
+        $this->institution = $institution;
+    }
+
+    /**
+     * Get the city of the user.
+     *
+     * @return string The city.
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set the city of the user.
+     *
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * Get the country of the user.
+     *
+     * @return string The country.
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set the country of the user.
+     *
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * Get the activity domain of the user.
+     *
+     * @return string The activity domain.
+     */
+    public function getActivitydomain()
+    {
+        return $this->activity_domain;
+    }
+
+    /**
+     * Set the activity domain of the user.
+     *
+     * @param string $activity_domain
+     */
+    public function setActivitydomain($activity_domain)
+    {
+        $this->activity_domain = $activity_domain;
+    }
+
+    /**
+     * Get the research domain of the user.
+     *
+     * @return string The research domain.
+     */
+    public function getResearchdomain()
+    {
+        return $this->research_domain;
+    }
+
+    /**
+     * Set the research domain of the user.
+     *
+     * @param string $research_domain
+     */
+    public function setResearchdomain($research_domain)
+    {
+        $this->research_domain = $research_domain;
+    }
+
+    /**
      * Get the pourcentage of how many this user information are complete
      * Function return a value between 0 and 1
      */
@@ -367,7 +472,11 @@ class User implements UserInterface, \Serializable
         $cpt += ( $this->getName() == "" ? 1 : 0 ); $tot++;
         $cpt += ( $this->getEmail() == "" ? 1 : 0 ); $tot++;
         $cpt += ( $this->getDescription() == "" ? 1 : 0 ); $tot++;
-        $cpt += ( $this->getLocation() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getCity() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getCountry() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getInstitution() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getActivitydomain() == "" ? 1 : 0 ); $tot++;
+        $cpt += ( $this->getResearchdomain() == "" ? 1 : 0 ); $tot++;
         $cpt += ( $this->getWebsite() == "" ? 1 : 0 ); $tot++;
         $cpt += ( $this->getBirthdate() == "" ? 1 : 0 ); $tot++;
         return 1 - $cpt / $tot ;

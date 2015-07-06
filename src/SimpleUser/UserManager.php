@@ -121,6 +121,11 @@ class UserManager implements UserProviderInterface
         $user->setWebsite($data['website']);
         $user->setBirthdate($data['birthdate']);
         $user->setLastConnexion($data['last_connexion']);
+        $user->setCity($data['city']);
+        $user->setCountry($data['country']);
+        $user->setInstitution($data['institution']);
+        $user->setActivitydomain($data['activitydomain']);
+        $user->setResearchdomain($data['researchdomain']);
 
         /* Log of ouput user to compare */
         ob_start(); var_dump($user);
@@ -256,6 +261,11 @@ class UserManager implements UserProviderInterface
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
             'last_connexion' => $user->getLastConnexion()
+            'city' => $user->getCity(),
+            'country' => $user->getCountry(),
+            'institution' => $user->getInstitution(),
+            'activitydomain' => $user->getActivitydomain(),
+            'researchdomain' => $user->getResearchdomain(),
           );
     }
 
@@ -280,6 +290,11 @@ class UserManager implements UserProviderInterface
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
             'last_connexion' => $user->getLastConnexion()
+            'city' => $user->getCity(),
+            'country' => $user->getCountry(),
+            'institution' => $user->getInstitution(),
+            'activitydomain' => $user->getActivitydomain(),
+            'researchdomain' => $user->getResearchdomain(),
           ));
         }
 
@@ -451,7 +466,7 @@ class UserManager implements UserProviderInterface
         /* Log created user id */
         $this->app['monolog']->debug("TRACE:insert:userId:".$user->getId());
 
-        $sql = 'INSERT INTO users_infos (user_id, description, location, website, birthdate, last_connexion) VALUES (:user_id, :description, :location, :website, :birthdate, :last_connexion) ';
+        $sql = 'INSERT INTO users_infos (user_id, description, location, website, birthdate, last_connexion, city, country, institution, activity_domain, research_domain) VALUES (:user_id, :description, :location, :website, :birthdate, :last_connexion, :city, :country, :institution, :activity_domain, :research_domain) ';
 
         $params = array (
             'user_id' => $user->getId(),
@@ -459,7 +474,12 @@ class UserManager implements UserProviderInterface
             'location' => $user->getLocation(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
-            'last_connexion' => $user->getLastConnexion()
+            'last_connexion' => $user->getLastConnexion(),
+            'city' => $user->getCity(),
+            'country' => $user->getCountry(),
+            'institution' => $user->getInstitution(),
+            'activity_domain' => $user->getActivitydomain(),
+            'research_domain' => $user->getResearchdomain()
         );
 
         $this->conn->executeUpdate($sql, $params);
@@ -502,6 +522,11 @@ class UserManager implements UserProviderInterface
             , website = :website
             , birthdate = :birthdate
             , last_connexion = :last_connexion
+            , city = :city
+            , country = :country
+            , institution = :institution
+            , activity_domain = :activity_domain
+            , research_domain = :research_domain
             WHERE user_id = :user_id';
 
         $params = array(
@@ -511,6 +536,11 @@ class UserManager implements UserProviderInterface
             'birthdate' => $user->getBirthdate(),
             'last_connexion' => $user->getLastConnexion(),
             'user_id' => $user->getId(),
+            'city' => $user->getCity(),
+            'country' => $user->getCountry(),
+            'institution' => $user->getInstitution(),
+            'activity_domain' => $user->getActivitydomain(),
+            'research_domain' => $user->getResearchdomain()
         );
 
         $this->conn->executeUpdate($sql, $params);

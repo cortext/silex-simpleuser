@@ -330,6 +330,26 @@ Make sure you change it the next time you log into Cortext !\n\n
             if ( $user->getBirthdate() != $request->request->get('birthdate') ) $app['monolog']->debug("TRACE:editAction:modification:birthdate:".$user->getBirthdate()."=>".$request->request->get('birthdate').":".$id);
             $user->setBirthdate($request->request->get('birthdate'));
 
+            /* User City */
+            if ( $user->getCity() != $request->request->get('city') ) $app['monolog']->debug("TRACE:editAction:modification:city:".$user->getCity()."=>".$request->request->get('city').":".$id);
+            $user->setCity($request->request->get('city'));
+
+            /* User Country */
+            if ( $user->getCountry() != $request->request->get('country') ) $app['monolog']->debug("TRACE:editAction:modification:country:".$user->getCountry()."=>".$request->request->get('country').":".$id);
+            $user->setCountry($request->request->get('country'));
+
+            /* User Institution */
+            if ( $user->getInstitution() != $request->request->get('institution') ) $app['monolog']->debug("TRACE:editAction:modification:institution:".$user->getInstitution()."=>".$request->request->get('institution').":".$id);
+            $user->setInstitution($request->request->get('institution'));
+
+            /* User Activity Domain */
+            if ( $user->getActivitydomain() != $request->request->get('activitydomain') ) $app['monolog']->debug("TRACE:editAction:modification:activitydomain:".$user->getActivitydomain()."=>".$request->request->get('activitydomain').":".$id);
+            $user->setActivitydomain($request->request->get('activitydomain'));
+
+            /* User Research Domain */
+            if ( $user->getResearchdomain() != $request->request->get('researchdomain') ) $app['monolog']->debug("TRACE:editAction:modification:researchdomain:".$user->getResearchdomain()."=>".$request->request->get('researchdomain').":".$id);
+            $user->setResearchdomain($request->request->get('researchdomain'));
+
             /* Call to the validate function of the user, to check if the user is correct */
             $errors += $this->userManager->validate($user);
 
