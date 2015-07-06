@@ -60,6 +60,27 @@
 
         <div class="control-group">
             <div class="controls">
+                <label class="control-label" for="input-city">City</label>
+                <input name="city" type="text" id="input-city" placeholder="City" value="{{ user.city }}" class="{% if user.city == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-country">Country</label>
+                <input name="country" type="text" id="input-country" placeholder="Country" value="{{ user.country }}" class="{% if user.country == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-institution">Institution</label>
+                <input name="institution" type="text" id="input-institution" placeholder="Institution" value="{{ user.institution }}" class="{% if user.institution == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
                 <label class="control-label" for="input-confirm-password">Confirm password</label>
                 <input name="confirm_password" type="password" id="input-confirm-password" placeholder="Confirm password">
             </div>
@@ -123,6 +144,20 @@
             <div class="controls">
                 <label class="control-label" for="input-birthdate">Birhtdate</label>
                 <input name="birthdate" type="text" id="input-birthdate" placeholder="YYYY-MM-DD" value="{{ user.birthdate }}" maxlength="10" class="{% if user.birthdate == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-activitydomain">Activity Domain</label>
+                <input name="activitydomain" type="text" id="input-activitydomain" placeholder="Activity domain" value="{{ user.activitydomain }}" class="{% if user.activitydomain == '' %}missing{% endif %}">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <label class="control-label" for="input-researchdomain">Research Domain</label>
+                <input name="researchdomain" type="text" id="input-researchdomain" placeholder="Research Domain" value="{{ user.website }}" class="{% if user.researchdomain == '' %}missing{% endif %}">
             </div>
         </div>
 
