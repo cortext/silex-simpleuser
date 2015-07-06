@@ -202,7 +202,11 @@ Make sure you change it the next time you log into Cortext !\n\n
         $user = $this->userManager->createUser(
             $request->request->get('email'),
             $request->request->get('password'),
-            $request->request->get('name') ?: null);
+            $request->request->get('name') ?: null,
+            array(),
+            $request->request->get('city'),
+            $request->request->get('country'),
+            $request->request->get('institution') );
 
         $errors = $this->userManager->validate($user);
         if (!empty($errors)) {

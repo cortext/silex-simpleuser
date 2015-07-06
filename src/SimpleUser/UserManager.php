@@ -140,9 +140,12 @@ class UserManager implements UserProviderInterface
      * @param string $plainPassword
      * @param string $name
      * @param array $roles
+     * @param string $city
+     * @param string $country
+     * @param string $institution
      * @return User
      */
-    public function createUser($email, $plainPassword, $name = null, $roles = array())
+    public function createUser($email, $plainPassword, $name = null, $roles = array(), $city, $country, $institution)
     {
         $user = new User($email);
 
@@ -158,6 +161,21 @@ class UserManager implements UserProviderInterface
         if (!empty($roles))
         {
             $user->setRoles($roles);
+        }
+
+        if ($city !== null)
+        {
+            $user->setCity($city);
+        }
+
+        if ($country !== null)
+        {
+            $user->setCountry($country);
+        }
+
+        if ($institution !== null)
+        {
+            $user->setInstitution($institution);
         }
 
         return $user;
