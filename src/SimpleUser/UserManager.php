@@ -260,7 +260,7 @@ class UserManager implements UserProviderInterface
             'description' => $user->getDescription(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
-            'last_connexion' => $user->getLastConnexion()
+            'last_connexion' => $user->getLastConnexion(),
             'city' => $user->getCity(),
             'country' => $user->getCountry(),
             'institution' => $user->getInstitution(),
