@@ -19,7 +19,6 @@ class User implements UserInterface, \Serializable
     protected $name = '';
     protected $timeCreated;
     protected $description;
-    protected $location;
     protected $website;
     protected $birthdate;
     protected $last_connexion; 
@@ -250,26 +249,6 @@ class User implements UserInterface, \Serializable
     public function getTimeCreated()
     {
         return $this->timeCreated;
-    }
-
-    /**
-     * Get the location of the user.
-     *
-     * @return string The location.
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
-     * Set the location of the user.
-     *
-     * @param string $location
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
     }
 
     /**

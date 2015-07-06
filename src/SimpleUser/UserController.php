@@ -314,10 +314,6 @@ Make sure you change it the next time you log into Cortext !\n\n
                 $user->setRoles($request->request->get('roles'));
             }
 
-            /* User Location */
-            if ( $user->getLocation() != $request->request->get('location') ) $app['monolog']->debug("TRACE:editAction:modification:location:".$user->getLocation()."=>".$request->request->get('location').":".$id);
-            $user->setLocation($request->request->get('location'));
-
             /* User Description */
             if ( $user->getDescription() != $request->request->get('description') ) $app['monolog']->debug("TRACE:editAction:modification:description:".$id);
             $user->setDescription($request->request->get('description'));

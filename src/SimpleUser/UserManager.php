@@ -116,7 +116,6 @@ class UserManager implements UserProviderInterface
         $user->setTimeCreated($data['time_created']);
 
         /* Fields of table users_infos */
-        $user->setLocation($data['location']);
         $user->setDescription($data['description']);
         $user->setWebsite($data['website']);
         $user->setBirthdate($data['birthdate']);
@@ -124,8 +123,8 @@ class UserManager implements UserProviderInterface
         $user->setCity($data['city']);
         $user->setCountry($data['country']);
         $user->setInstitution($data['institution']);
-        $user->setActivitydomain($data['activitydomain']);
-        $user->setResearchdomain($data['researchdomain']);
+        $user->setActivitydomain($data['activity_domain']);
+        $user->setResearchdomain($data['research_domain']);
 
         /* Log of ouput user to compare */
         ob_start(); var_dump($user);
@@ -256,7 +255,6 @@ class UserManager implements UserProviderInterface
             'username' => $user->getUsername(),
             'email' =>  $user->getEmail(),
             'name' => $user->getName(),
-            'location' => $user->getLocation(),
             'description' => $user->getDescription(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
@@ -285,7 +283,6 @@ class UserManager implements UserProviderInterface
             'username' => $user->getUsername(),
             'email' =>  $user->getEmail(),
             'name' => $user->getName(),
-            'location' => $user->getLocation(),
             'description' => $user->getDescription(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
@@ -466,12 +463,11 @@ class UserManager implements UserProviderInterface
         /* Log created user id */
         $this->app['monolog']->debug("TRACE:insert:userId:".$user->getId());
 
-        $sql = 'INSERT INTO users_infos (user_id, description, location, website, birthdate, last_connexion, city, country, institution, activity_domain, research_domain) VALUES (:user_id, :description, :location, :website, :birthdate, :last_connexion, :city, :country, :institution, :activity_domain, :research_domain) ';
+        $sql = 'INSERT INTO users_infos (user_id, description, website, birthdate, last_connexion, city, country, institution, activity_domain, research_domain) VALUES (:user_id, :description, :website, :birthdate, :last_connexion, :city, :country, :institution, :activity_domain, :research_domain) ';
 
         $params = array (
             'user_id' => $user->getId(),
             'description' => $user->getDescription(),
-            'location' => $user->getLocation(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
             'last_connexion' => $user->getLastConnexion(),
@@ -517,8 +513,7 @@ class UserManager implements UserProviderInterface
         $this->conn->executeUpdate($sql, $params);
 
         $sql = 'UPDATE users_infos
-            SET location = :location
-            , description = :description
+            SET description = :description
             , website = :website
             , birthdate = :birthdate
             , last_connexion = :last_connexion
@@ -530,7 +525,6 @@ class UserManager implements UserProviderInterface
             WHERE user_id = :user_id';
 
         $params = array(
-            'location' => $user->getLocation(),
             'description' => $user->getDescription(),
             'website' => $user->getWebsite(),
             'birthdate' => $user->getBirthdate(),
