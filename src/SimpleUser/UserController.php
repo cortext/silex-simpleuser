@@ -96,23 +96,46 @@ class UserController
                     $app['security']->setToken($token);
                 }
 
-                $message = \Swift_Message::newInstance()
+
+                //mailing to user and admins when registered
+                $mailAdminFrom = $app['parameters']['admin'] or "webmaster@cortext.fr";
+                $listAdminCortext = $app['parameters']['adminList'] or "coeur@cortext.fr";
+
+                //user mail
+                $messageUser = \Swift_Message::newInstance()
                 ->setSubject('[Cortext] Welcome')
-                ->setFrom(array('webmaster@cortext.fr'))
+                ->setFrom(array($mailAdminFrom))
                 ->setTo(array($user->getEmail()))
-                ->setBcc(array('webmaster@cortext.fr'))
                 ->setBody($app['twig']->render('@user/emailRegister.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
 
+                $messageAdmin = \Swift_Message::newInstance()
+                ->setSubject('[Cortext] New user registered on '.date("Y-m-d H:i:s"))
+                ->setFrom(array($mailAdminFrom))
+                ->setTo(array($listAdminCortext))
+                ->setBody($app['twig']->render('@user/emailRegisterAdmin.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
                 
-                if( $app['mailer']->send($message))//send email  
+                //sending mail to admin and deal with errors               
+                if( $app['mailer']->send($messageAdmin))//send email  
                 {
-                    $app['monolog']->info("Sended mail : ".$message);
+                    $app['monolog']->info("Sended mail : ".$messageAdmin);
                 }         
                 else
                 {
-                    $app['monolog']->error("ERROR while send registration mail : ".$message);
+                    $app['monolog']->error("ERROR while send admin mail : ".$messageAdmin);
                 }
-                    
+                
+
+                //sending mail to user and deal with errors               
+                if( $app['mailer']->send($messageUser))//send email  
+                {
+                    $app['monolog']->info("Sended mail : ".$messageUser);
+                }         
+                else
+                {
+                    $app['monolog']->error("ERROR while send registration mail : ".$messageUser);
+                }
+                
+                //redirect to callback if present
                 if($callback_url)
                   return $app->redirect($callback_url);
                 else
