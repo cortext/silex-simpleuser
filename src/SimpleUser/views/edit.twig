@@ -373,14 +373,14 @@
         <div class="control-group">
             <div class="controls">
                 <label class="control-label" for="input-website">Website</label>
-                <input name="website" type="text" id="input-website" placeholder="http://www.mywebsite.com" value="{{ user.website }}" class="{% if user.website == '' %}missing{% endif %}">
+                <input name="website" type="url" id="input-website" placeholder="http://www.mywebsite.com" value="{{ user.website }}" class="{% if user.website == '' %}missing{% endif %}">
             </div>
         </div>
 
         <div class="control-group">
             <div class="controls">
-                <label class="control-label" for="input-birthdate">Birhtdate</label>
-                <input name="birthdate" type="text" id="input-birthdate" placeholder="YYYY-MM-DD" value="{{ user.birthdate }}" maxlength="10" class="{% if user.birthdate == '' %}missing{% endif %}">
+                <label class="control-label" for="input-birthdate">Birthdate</label>
+                <input name="birthdate" type="date" id="input-birthdate" value="{{ user.birthdate }}" class="{% if user.birthdate == '' %}missing{% endif %}">
             </div>
         </div>
 

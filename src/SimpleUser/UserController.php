@@ -449,7 +449,7 @@ Make sure you change it the next time you log into Cortext !\n\n
         $lastResult = ($offset + $limit) > $numResults ? $numResults : $offset + $limit;
 
         return $app['twig']->render('@user/list.twig', array(
-            'layout_template' => $this->layoutTemplate,
+            'layout_template' => '@user/layoutList.twig',
             'users' => $users,
             'numResults' => $numResults,
             'nextUrl' => $nextUrl,
