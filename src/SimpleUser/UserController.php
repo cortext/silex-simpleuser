@@ -266,12 +266,13 @@ Make sure you change it the next time you log into Cortext !\n\n
 
     }
 
-    public function viewSelfAction(Application $app) {
+    public function viewSelfAction(Application $app, Request $request) {
         if (!$app['user']) {
             return $app->redirect($app['url_generator']->generate('user.login'));
         }
+        $callback_url = $request->get('callback_url');
 
-        return $app->redirect($app['url_generator']->generate('user.view', array('id' => $app['user']->getId())));
+        return $app->redirect($app['url_generator']->generate('user.view', array('id' => $app['user']->getId(), 'callback_url' => $callback_url )));
     }
 
     /**
@@ -420,6 +421,7 @@ Make sure you change it the next time you log into Cortext !\n\n
         $offset = $request->get('offset') ?: 0;
         $order_by = $request->get('order_by') ?: 'id';
         $order_dir = $request->get('order_dir') == 'DESC' ? 'DESC' : 'ASC';
+        $callback_url = $request->get('callback_url');
 
         $numResults = $this->userManager->findCount();
 
@@ -451,6 +453,7 @@ Make sure you change it the next time you log into Cortext !\n\n
         return $app['twig']->render('@user/list.twig', array(
             'layout_template' => '@user/layoutList.twig',
             'users' => $users,
+            'callbackUrl' => $callback_url,
             'numResults' => $numResults,
             'nextUrl' => $nextUrl,
             'prevUrl' => $prevUrl,

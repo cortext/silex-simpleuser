@@ -19,13 +19,13 @@
     {% for user in users %}
 
         <div class="media">
-            <a class="media-object pull-left" href="{{ path('user.view', {'id': user.id}) }}">
+            <a class="media-object pull-left" href="{{ path('user.view', {'id': user.id, 'callback_url': callbackUrl}) }}">
                 <img src="{{ user.imageUrl }}" width="40" height="40" border=0>
             </a>
 
             <div class="media-body">
                 <h4 class="media-heading">
-                    <a href="{{ path('user.view', {'id': user.id}) }}">{{ user.displayName }}</a>
+                    <a href="{{ path('user.view', {'id': user.id, 'callback_url': callbackUrl}) }}">{{ user.displayName }}</a>
                 </h4>
 
                 {% if is_granted('ROLE_ADMIN') %}

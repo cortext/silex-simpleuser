@@ -39,7 +39,7 @@
         {% if is_granted('ROLE_USER') %}
         {#% if is_granted('EDIT_USER') %#}
             <div id="edit-user">
-                <a href="{{ path('user.edit', {'id': user.id}) }}"><i class="icon-edit" style="margin-right: 5px;"></i>Edit</a>
+                <a href="{{ path('user.edit', {'id': user.id, 'callback_url':app.request.get('callback_url')}) }}"><i class="icon-edit" style="margin-right: 5px;"></i>Edit</a>
             </div>
         {#% endif %#}
 
