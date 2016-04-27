@@ -281,7 +281,7 @@ Make sure you change it the next time you log into Cortext !\n\n
      * @param int $size
      * @return string
      */
-    protected function getGravatarUrl($email, $size = 80)
+    public function getGravatarUrl($email, $size = 80)
     {
         // See https://en.gravatar.com/site/implement/images/ for available options.
         return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
