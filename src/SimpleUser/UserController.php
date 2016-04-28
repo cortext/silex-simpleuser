@@ -252,6 +252,7 @@ Make sure you change it the next time you log into Cortext !\n\n
     {
         $user = $this->userManager->getUser($id);
         $userProfile = $this->userManager->getUserProfile($id);
+        $userProfile['imageUrl'] = $this->getGravatarUrl($user->getEmail());
         //die(print_r($userProfile));
         if (!$user) {
             throw new NotFoundHttpException('No user was found with that ID.');
@@ -261,7 +262,7 @@ Make sure you change it the next time you log into Cortext !\n\n
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
             'profile' => $userProfile,
-            'imageUrl' => $this->getGravatarUrl($user->getEmail()),
+            'imageUrl' => $this->getGravatarUrl($app['user']->getEmail()),
         ));
 
     }
