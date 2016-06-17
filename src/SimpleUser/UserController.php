@@ -69,6 +69,7 @@ class UserController
             'layout_template' => $this->layoutTemplate,
             'error' => $app['security.last_error']($request),
             'last_username' => $app['session']->get('_security.last_username'),
+            'platform_name' => $app['parameters']['platform_name'],
             'allowRememberMe' => isset($app['security.remember_me.response_listener']),
         ));
     }
@@ -152,6 +153,7 @@ class UserController
             'name' => $request->request->get('name'),
             'email' => $request->request->get('email'),
             'callback' => $request->query->get('callback'),
+            'platform_name' => $app['parameters']['platform_name'],
             'imageUrl' => null
         ));
     }
