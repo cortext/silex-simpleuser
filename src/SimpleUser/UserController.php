@@ -264,7 +264,7 @@ Make sure you change it the next time you log into Cortext !\n\n
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
             'profile' => $userProfile,
-            'imageUrl' => $this->getGravatarUrl($app['user']->getEmail()),
+            'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ));
 
     }
