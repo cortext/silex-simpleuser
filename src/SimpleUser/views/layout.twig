@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    {% block head %}
       <link rel="stylesheet" href="{{ app.request.basePath }}/css/reset.css">
       <link rel="stylesheet" href="{{ app.request.basePath }}/css/main.css">
       <link rel="stylesheet" href="{{ app.request.basePath }}/css/login.css">
       <link rel="stylesheet" href="{{ app.request.basePath }}/css/theme.css">
       <title>{% block title %}{% endblock %}</title>
+    {% block head %}
     {% endblock %}
   </head>
   <body>

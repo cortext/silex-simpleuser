@@ -2,6 +2,80 @@
 
 {% block title %}Register{% endblock %}
 
+{% block head %}
+<style>
+/* The Modal (background) */
+.modal {
+    display: block; /* Shown by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 53px;
+    bottom: 49px;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    top: 70px;
+    padding: 0;
+    border: 1px solid #888;
+    width: 60%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.6s;
+    animation-name: animatetop;
+    animation-duration: 0.6s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:70px; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:70px; opacity:1}
+}
+
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #9e1d43;
+    color: white;
+    min-height: 40px;
+    font: 17px "Oxygen-Regular",sans-serif;
+    letter-spacing: 0.1em;
+    line-height: 40px;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="media border-media">
@@ -13,6 +87,23 @@
         <p id="view"><a href="{{ path('user.view', {'id': app.user.id}) }}">view profile</a></p>
 
     {% else %}
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">×</span>
+      <h2>Reminder</h2>
+    </div>
+    <div class="modal-body">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean volutpat magna a nisi laoreet, nec aliquet nulla dapibus. Suspendisse varius egestas fermentum. Curabitur a commodo eros. Ut porttitor varius consequat. Suspendisse vitae lobortis lectus. Etiam lacus metus, sollicitudin quis lacinia non, dapibus eu mauris. Nulla aliquet, ante quis luctus rhoncus, ante erat egestas risus, quis aliquam quam leo nec neque. Nulla at lectus leo. Nunc blandit, velit non bibendum lobortis, diam ex faucibus est, at suscipit risus diam sed dui. Nulla vestibulum lacinia massa ac porta.</p>
+      <p>Quisque sodales auctor lorem in pulvinar. Mauris vestibulum congue eros nec dignissim. Sed tincidunt tristique tincidunt. Cras non neque laoreet, auctor risus id, semper urna. Quisque gravida quam a augue venenatis, vitae maximus orci iaculis. Duis ut lobortis tellus, ut mattis dolor. Maecenas risus metus, imperdiet sed augue non, cursus accumsan dolor. Fusce et massa consectetur, finibus nisl vitae, lobortis justo.</p>
+    </div>
+  </div>
+</div>
+<script>
+document.getElementsByClassName("close")[0].onclick = function() {
+  document.getElementById('myModal').style.display = "none";
+}
+</script>
         <div class="page-header">
             <h2 class="info-sign">
                 Create an account<br/>
@@ -328,7 +419,7 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <label class="control-label required-field" for="input-disclaimer">Disclaimer</label>
+                    <label class="control-label required-field" for="input-disclaimer">Terms of use</label>
                     <input name="institution" type="checkbox" id="input-disclaimer" required value="">
                     <span class="help-disclaimer">I agree to {{ platform_name }} <a href="{{ path('conditions') }}" alt="Conditions Générales d'Utilisation" target="_blank">terms & conditions</a>.</span>
                 </div>
