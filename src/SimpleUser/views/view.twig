@@ -30,9 +30,17 @@
         <div class="profile">
             <div class='table'>
                     {% for key,item in profile %}
+        {% if is_granted('ROLE_USER') %}
                         {% if key != "id" and key != "last_connexion" and key != "imageUrl" %}
                             <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
                         {% endif %}
+        {% else %}
+                        {% if key == "name" or key == "description" %}
+                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
+                        {% elseif key == "website" %}
+                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> <a href="{{item}}" target="_blank" class="profile table-user item" rel="follow">{{item}}</a></p></div>
+                        {% endif %}
+        {% endif %}
                     {% endfor %}
             </div>
 
