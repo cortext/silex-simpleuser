@@ -486,7 +486,7 @@ class UserManager implements UserProviderInterface
         /* Log created user id */
         $this->app['monolog']->debug("TRACE:insert:userId:".$user->getId());
 
-        $sql = 'INSERT INTO users_infos (user_id, description, website, birthdate, last_connexion, city, country, institution, activity_domain, research_domain) VALUES (:user_id, :description, :website, :birthdate, :last_connexion, :city, :country, :institution, :activity_domain, :research_domain) ';
+        $sql = 'INSERT INTO users_infos (user_id, description, website, birthdate, last_connexion, city, country, institution, activity_domain, research_domain, authorizations) VALUES (:user_id, :description, :website, :birthdate, :last_connexion, :city, :country, :institution, :activity_domain, :research_domain, :authorizations) ';
 
         $params = array (
             'user_id' => $user->getId(),
@@ -498,7 +498,8 @@ class UserManager implements UserProviderInterface
             'country' => $user->getCountry(),
             'institution' => $user->getInstitution(),
             'activity_domain' => $user->getActivitydomain(),
-            'research_domain' => $user->getResearchdomain()
+            'research_domain' => $user->getResearchdomain(),
+            'authorizations' => $user->getAuthorizations()
         );
 
         $this->conn->executeUpdate($sql, $params);
@@ -545,6 +546,7 @@ class UserManager implements UserProviderInterface
             , institution = :institution
             , activity_domain = :activity_domain
             , research_domain = :research_domain
+            , authorizations = :authorizations
             WHERE user_id = :user_id';
 
         $params = array(
@@ -557,7 +559,8 @@ class UserManager implements UserProviderInterface
             'country' => $user->getCountry(),
             'institution' => $user->getInstitution(),
             'activity_domain' => $user->getActivitydomain(),
-            'research_domain' => $user->getResearchdomain()
+            'research_domain' => $user->getResearchdomain(),
+            'authorizations' => $user->getAuthorizations()
         );
 
         $this->conn->executeUpdate($sql, $params);

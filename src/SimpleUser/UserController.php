@@ -303,6 +303,7 @@ Make sure you change it the next time you log into Cortext !\n\n
     {
         /* Trace edition */
         $app['monolog']->debug("TRACE:editAction:edit:".$id);
+        $app['monolog']->debug("TRACE:editAction:edit:".$id);
 
         /* Initialize errors list */
         $errors = array();
@@ -376,6 +377,11 @@ Make sure you change it the next time you log into Cortext !\n\n
             /* User Research Domain */
             if ( $user->getResearchdomain() != $request->request->get('researchdomain') ) $app['monolog']->debug("TRACE:editAction:modification:researchdomain:".$user->getResearchdomain()."=>".$request->request->get('researchdomain').":".$id);
             $user->setResearchdomain($request->request->get('researchdomain'));
+
+             /* User Authorizations */
+            if ( $user->getAuthorizations() != $request->request->get('authorizations') ) $app['monolog']->debug("TRACE:editAction:modification:researchdomain:".$user->getResearchdomain()."=>".$request->request->get('researchdomain').":".$id);
+            $user->setAuthorizations($request->request->get('authorizations'));
+
 
             /* Call to the validate function of the user, to check if the user is correct */
             $errors += $this->userManager->validate($user);
