@@ -286,6 +286,7 @@ class UserManager implements UserProviderInterface
             'institution' => $user->getInstitution(),
             'activitydomain' => $user->getActivitydomain(),
             'researchdomain' => $user->getResearchdomain(),
+            'authorizations' => $user->getAuthorizations(),
             'roles' => $user->getRoles(),
           );
     }
