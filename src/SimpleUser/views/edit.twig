@@ -350,6 +350,12 @@
                     </select>
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="input-authorizations">Authorizations</label>
+                <div class="controls">
+                     <input name="authorizations" type="text" id="input-authorizations" placeholder="{}" required value="{{ user.authorizations }}" class="{% if user.authorizations == '' %}missing{% endif %}">
+                </div>
+            </div>
         {% endif %}
 
         <div class="control-group">

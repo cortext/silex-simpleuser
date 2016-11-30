@@ -27,6 +27,7 @@ class User implements UserInterface, \Serializable
     protected $institution;
     protected $activity_domain;
     protected $research_domain;
+    protected $authorizations;
 
     /**
      * Constructor.
@@ -439,6 +440,26 @@ class User implements UserInterface, \Serializable
     public function setResearchdomain($research_domain)
     {
         $this->research_domain = $research_domain;
+    }
+
+    /**
+     * Get the authorizations of the user.
+     *
+     * @return string the authorizations.
+     */
+    public function getAuthorizations()
+    {
+        return $this->authorizations;
+    }
+
+    /**
+     * Set the authorizations of the user.
+     *
+     * @param string $authorizations
+     */
+    public function setAuthorizations($authorizations)
+    {
+        $this->authorizations = $authorizations;
     }
 
     /**

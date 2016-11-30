@@ -125,6 +125,7 @@ class UserManager implements UserProviderInterface
         $user->setInstitution($data['institution']);
         $user->setActivitydomain($data['activity_domain']);
         $user->setResearchdomain($data['research_domain']);
+        $user->setAuthorizations($data['authorizations']);
 
         /* Log of ouput user to compare */
         ob_start(); var_dump($user);
@@ -177,6 +178,9 @@ class UserManager implements UserProviderInterface
         {
             $user->setInstitution($institution);
         }
+
+        //default authorizations are null
+        $user->setAuthorizations("{}");
 
         return $user;
     }
