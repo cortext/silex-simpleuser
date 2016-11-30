@@ -87,6 +87,7 @@
         <p id="view"><a href="{{ path('user.view', {'id': app.user.id}) }}">view profile</a></p>
 
     {% else %}
+    {% if app.parameters.reminder is defined and app.parameters.reminder %}
 <div id="myModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -103,6 +104,7 @@ document.getElementsByClassName("close")[0].onclick = function() {
   document.getElementById('myModal').style.display = "none";
 }
 </script>
+      {% endif %}
         <div class="page-header">
             <h2 class="info-sign">
                 Create an account<br/>
