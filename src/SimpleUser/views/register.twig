@@ -120,8 +120,8 @@ document.getElementsByClassName("close")[0].onclick = function() {
                 <input name="callback" type="hidden" value="{{ callback }}" />
             <div class="control-group">
                 <div class="controls">
-                    <label class="control-label" for="input-name">Name</label>
-                    <input name="name" type="text" id="input-name" placeholder="Name" value="{{ name }}">
+                    <label class="control-label required-field" for="input-name" >Name</label>
+                    <input name="name" type="text" id="input-name" placeholder="Name" required value="{{ name }}">
                     <span class="help-inline">Shown publicly</span>
                 </div>
             </div>
