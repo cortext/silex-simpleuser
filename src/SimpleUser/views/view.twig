@@ -31,8 +31,8 @@
             <div class='table'>
                     {% for key,item in profile %}
         {% if is_granted('ROLE_USER') %}
-                        {% if key != "id" and key != "last_connexion" and key != "imageUrl" and key != "roles" %}
-                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
+                        {% if key != "id" and key != "last_connexion" and key != "imageUrl" and key != "roles" and key != "authorizations" %}
+                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>
                         {% endif %}
         {% else %}
                         {% if key == "name" or key == "description" %}
