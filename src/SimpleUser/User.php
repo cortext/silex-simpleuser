@@ -453,6 +453,20 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Get the one particular authorisation of the user.
+     * @param  [type] $key [description]
+     * @return [string]  the value of the authorization
+     */
+    public function getAuthorization($key)
+    {
+        $authArray = json_decode($this->authorizations, true);
+        if(isset($authArray[$key]))
+            return $authArray[$key];
+        else
+            return false;
+    }
+
+    /**
      * Set the authorizations of the user.
      *
      * @param string $authorizations
@@ -460,6 +474,18 @@ class User implements UserInterface, \Serializable
     public function setAuthorizations($authorizations)
     {
         $this->authorizations = $authorizations;
+    }
+
+    /**
+     * add or updates a new authorization  value (is a json object) based on a particular key
+     * @param [string] $key
+     * @param [json] $value
+     */
+    public function setAuthorization($key, $value)
+    {
+        $authArray = json_decode($this->getAuthorizations(), true);
+        $authArray[$key] = $value;
+        $this->setAuthorizations(json_encode($authArray));
     }
 
     /**
