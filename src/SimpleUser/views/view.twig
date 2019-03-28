@@ -18,8 +18,16 @@
         Registered {{ user.timeCreated|date('F j, Y') }}
         </div>
         {% if app.request.get('callback_url') %}
-            <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
+            <div id="link-user">
+                <a href="{{ app.request.get('callback_url') }}">
+                   click here to go back to the app 
+                 </button>
+               </a>
+           </div>
+
         {% endif %}
+
+
 
     </div>
 
@@ -50,10 +58,7 @@
                 <a href="{{ path('user.edit', {'id': user.id, 'callback_url':app.request.get('callback_url')}) }}"><i class="icon-edit" style="margin-right: 5px;"></i>Edit</a>
             </div>
         {#% endif %#}
-
         
-         <a href="{{ app.parameters.manager }}"><button id="btn-link-manager" type="submit">Welcome
-            {{ user.displayName }} , go to your Cortext app !</button></a>
         {% endif %}
 
     </div>
