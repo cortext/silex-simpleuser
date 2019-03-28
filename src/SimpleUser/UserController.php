@@ -99,18 +99,18 @@ class UserController
 
 
                 //mailing to user and admins when registered
-                $mailAdminFrom = $app['parameters']['admin'] or "webmaster@cortext.fr";
+                $mailAdminFrom = $app['parameters']['admin'] or "webmaster@risis2.eu";
                 $listAdminCortext = $app['parameters']['adminList'] or "coeur@cortext.fr";
 
                 //user mail
                 $messageUser = \Swift_Message::newInstance()
-                ->setSubject('[Cortext] Welcome')
+                ->setSubject('[RISIS Core Facility] Welcome')
                 ->setFrom(array($mailAdminFrom))
                 ->setTo(array($user->getEmail()))
                 ->setBody($app['twig']->render('@user/emailRegister.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
 
                 $messageAdmin = \Swift_Message::newInstance()
-                ->setSubject('[Cortext] New user registered on '.date("Y-m-d H:i:s"))
+                ->setSubject('[RCF] New user registered on '.date("Y-m-d H:i:s"))
                 ->setFrom(array($mailAdminFrom))
                 ->setTo(array($listAdminCortext))
                 ->setBody($app['twig']->render('@user/emailRegisterAdmin.twig', array('user'=>$user, 'callback_url'=>$callback_url)));
@@ -175,15 +175,15 @@ class UserController
            
             //create user email
             $messageContent = "Hi,
-this is an automated message from Cortext Authentification : you requested a password change. 
+this is an automated message from RCF Authentication Server : you requested a password change. 
 Please find below your new password :\n\n________________\n\n".$newPass."\n________________\n\n
-Make sure you change it the next time you log into Cortext !\n\n
+Make sure you change it the next time you log into Risis !\n\n
 \n\n Best regards,
-\n the Cortext Administration Team";
+\n the RCF Administration Team";
 
             $message = \Swift_Message::newInstance()
-            ->setSubject('[Cortext] New Password')
-            ->setFrom(array('webmaster@cortext.fr'))
+            ->setSubject('[RISIS COre Facility] New Password')
+            ->setFrom(array('webmaster@risis2.eu'))
             ->setTo(array($email))
             ->setBody($messageContent);
 
@@ -199,7 +199,7 @@ Make sure you change it the next time you log into Cortext !\n\n
             }
             else 
             {
-                $app['monolog']->error("ERROR while send forgot passwd mail to : ".$email);
+                $app['monolog']->error("ERROR while send forgot password mail to : ".$email);
                 throw new ErrorException('Mail has encountered an error while sending the password, please contact admin.');
                 return 1;
             }
