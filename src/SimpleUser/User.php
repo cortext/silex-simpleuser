@@ -558,7 +558,12 @@ class User implements UserInterface, \Serializable
         } else if (!strpos($this->getEmail(), '@')) {
             // Basic email format sanity check. Real validation comes from sending them an email with a link they have to click.
             $errors['email'] = 'Email address appears to be invalid.';
-        } else if (strlen($this->getEmail()) > 100) {
+	}
+        //hack ! //todo use a domain blacklist !!	
+	else if (strpos($this->getEmail(), 'qq.com') || strpos($this->getEmail(), '163.com')){
+            $errors['email'] = 'Email address appears to be invalid. Please use authorized domain only.';
+	}
+	else if (strlen($this->getEmail()) > 100) {
             $errors['email'] = 'Email address can\'t be longer than 100 characters.';
         }
 
