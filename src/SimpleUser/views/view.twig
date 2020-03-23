@@ -11,36 +11,40 @@
         <div class="gravatar">
         <img class="media-object pull-left" src="{{ profile.imageUrl }}" width="80" height="80">
         </div>
-
         <h1 class="media-heading">{{ user.displayName }}</h1>
-
         <div class="muted">
         Registered {{ user.timeCreated|date('F j, Y') }}
         </div>
-        {% if app.request.get('callback_url') %}
-            <div id="link-user"><a href="{{ app.request.get('callback_url') }}">back to app</a></div>
-        {% endif %}
-
     </div>
+
+    {% if is_granted('ROLE_USER') %}
+        {% if app.request.get('callback_url') %}
+            <a href="{{ app.request.get('callback_url') }}"><button id="btn-link-manager" type="submit">
+            Welcome {{ app.user.displayName }}, click here to go to your app</button></a>
+        {% else %}
+            <a href="{{ app.parameters.manager_login }}"><button id="btn-link-manager" type="submit">
+            Welcome {{ app.user.displayName }}, click here to continue to Cortext Manager</button></a>
+        {% endif %}
+    {% endif %}
 
     <h2 class="user-information">User informations</h2>
 
     <div class="media-body">
-        
+
         <div class="profile">
             <div class='table'>
                     {% for key,item in profile %}
-        {% if is_granted('ROLE_USER') %}
-                        {% if key != "id" and key != "last_connexion" and key != "imageUrl" and key != "roles" and key != "authorizations" %}
-                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>
+                        {% if is_granted('ROLE_USER') %}
+                                        {% if key != "id" and key != "last_connexion" and key != "imageUrl" and key != "roles" and key != "authorizations" %}
+                                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>
+                                        {% endif %}
+                        {% else %}
+                                        {% if key == "name" or key == "description" %}
+                                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
+                                        {% elseif key == "website" %}
+                                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> <a href="{{item}}" target="_blank" class="profile table-user item" rel="follow">{{item}}</a></p></div>
+                                        {% endif %}
                         {% endif %}
-        {% else %}
-                        {% if key == "name" or key == "description" %}
-                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> {{item}}</p></div>                  
-                        {% elseif key == "website" %}
-                            <div class="table-user"> <p class="key"> {{key}}</p> <p class="item"> <a href="{{item}}" target="_blank" class="profile table-user item" rel="follow">{{item}}</a></p></div>
-                        {% endif %}
-        {% endif %}
                     {% endfor %}
             </div>
 
@@ -50,10 +54,6 @@
                 <a href="{{ path('user.edit', {'id': user.id, 'callback_url':app.request.get('callback_url')}) }}"><i class="icon-edit" style="margin-right: 5px;"></i>Edit</a>
             </div>
         {#% endif %#}
-
-        
-         <a href="{{ app.parameters.manager }}"><button id="btn-link-manager" type="submit">Welcome
-            {{ app.user.displayName }} , go to your Cortext app !</button></a>
         {% endif %}
 
     </div>
