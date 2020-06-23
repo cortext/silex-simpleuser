@@ -33,7 +33,11 @@
             <li id="login-out"><a href="{{ path('user.logout') }}">Log out</a></li>
             <li id="user-name">
               <a href="{{ path('user.view', {'id': app.user.id, 'callback_url':app.request.get('callback_url')}) }}">
-              {% if imageUrl is defined %} <img src="{{ imageUrl }}" width="40" height="40"/> {% endif %} {{ app.user.displayName }}</a>
+                {% if guestImageUrl is defined %}
+                  <img src="{{ guestImageUrl }}" width="40" height="40"/>
+                {% endif %}
+                {{ app.user.displayName }}
+              </a>
             </li>
           {% else %}
             <li id="create-account"><a href="{{ path('user.login') }}">Log in</a></li>
