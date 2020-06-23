@@ -33,7 +33,11 @@
             <li id="login-out"><a href="{{ path('user.logout') }}">Log out</a></li>
             <li id="user-name">
               <a href="{{ path('user.view', {'id': app.user.id, 'callback_url':app.request.get('callback_url')}) }}">
-              {% if imageUrl is defined %} <img src="{{ imageUrl }}" width="40" height="40"/> {% endif %} {{ app.user.displayName }}</a>
+                {% if guestImageUrl is defined %}
+                  <img src="{{ guestImageUrl }}" width="40" height="40"/>
+                {% endif %}
+                {{ app.user.displayName }}
+              </a>
             </li>
           {% else %}
             <li id="create-account"><a href="{{ path('user.login') }}">Log in</a></li>
@@ -51,12 +55,12 @@
     </div>
     </div>
     <div class="auth-footer">
-      &copy; INRA {{ "now"|date("Y") }} |
+      &copy; INRAE {{ "now"|date("Y") }} |
       <a href="http://www.cortext.net/contact">Contact</a> |
       <a href="{{ path('credits') }}">Crédits</a> |
       <a href="{{ path('mentions') }}">Mentions Légales</a> |
-      <a href="{{ path('conditions') }}">CGU</a>
-      <a href="http://www.inra.fr" target="_blank" alt="INRA" title="INRA"><img src="/images/logo-inra-bw.png" alt="Logo INRA" width="96" height="40"></a>
+      <a href="{{ path('conditions_en') }}">Terms of use</a>
+      <a href="http://www.inra.fr" target="_blank" alt="INRAE" title="INRAE"><img src="/images/logo-inra-bw.png" alt="Logo INRA" width="96" height="40"></a>
       <a href="http://www.u-pem.fr" target="_blank" alt="U-PEM" title="U-PEM"><img src="/images/logo-upem-bw.png" alt="Logo U-Pem" width="45" height="40"></a>
     </div>
     </body>

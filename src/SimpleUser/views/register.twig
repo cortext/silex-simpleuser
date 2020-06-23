@@ -62,7 +62,24 @@
     cursor: pointer;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+    padding: 2px 16px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-body .disc_title {
+    text-align: center;
+    font: 17px "Oxygen-Regular", sans-serif;
+}
+
+#disc_en {
+    margin: 2rem 0;
+}
+
+#disc_fr {
+    margin: 0 0 2rem 0;
+}
 
 .modal-header {
     padding: 2px 16px;
@@ -422,7 +439,7 @@ document.getElementsByClassName("close")[0].onclick = function() {
                 <div class="controls">
                     <label class="control-label required-field" for="input-disclaimer">Terms of use</label>
                     <input name="institution" type="checkbox" id="input-disclaimer" required value="">
-                    <span class="help-disclaimer">I agree to {{ platform_name }} <a href="{{ path('conditions') }}" alt="Conditions Générales d'Utilisation" target="_blank">terms & conditions</a>.</span>
+                    <span class="help-disclaimer">I agree to {{ platform_name }} <a href="{{ path('conditions_en') }}" alt="Conditions Générales d'Utilisation" target="_blank">terms & conditions</a>.</span>
                 </div>
             </div>
 

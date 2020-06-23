@@ -255,18 +255,23 @@ Make sure you change it the next time you log into Cortext !\n\n
         $user = $this->userManager->getUser($id);
         $userProfile = $this->userManager->getUserProfile($id);
         $userProfile['imageUrl'] = $this->getGravatarUrl($user->getEmail());
-        //die(print_r($userProfile));
         if (!$user) {
             throw new NotFoundHttpException('No user was found with that ID.');
         }
 
-        return $app['twig']->render('@user/view.twig', array(
+        $context = array(
             'layout_template' => $this->layoutTemplate,
             'user' => $user,
             'profile' => $userProfile,
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
-        ));
+        );
 
+        $guest = $this->userManager->getCurrentUser();
+        if ($guest) {
+            $context['guestImageUrl'] = $this->getGravatarUrl($guest->getEmail());
+        }
+
+        return $app['twig']->render('@user/view.twig', $context);
     }
 
     public function viewSelfAction(Application $app, Request $request) {
