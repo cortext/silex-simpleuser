@@ -16,7 +16,11 @@
           <nav id="path">
             <div class="navbar-inner">
               <ul>
-                <li class="home"><a title="back" href="{{ app.request.get('callback_url', path('homepage')) }}"><img src="/images/home.png" alt="#"/></a></li></a>
+                <li class="home">
+                  <script>
+                      document.write('<a title="back" href="' + document.referrer + '"><img src="/images/home.png" alt="#"/></a>');
+                  </script>
+                </li>
                 <li class="user">
                   <span class="type">user</span>
                   <span class="name">{{ app.request.get(('_route'))|split('.')|last }}</span>
@@ -57,6 +61,7 @@
     <div class="auth-footer">
       &copy; INRAE {{ "now"|date("Y") }} |
       <a href="http://www.cortext.net/contact">Contact</a> |
+      <a href="https://docs.cortext.net/forum">Forum</a> |
       <a href="{{ path('credits') }}">Crédits</a> |
       <a href="{{ path('mentions') }}">Mentions Légales</a> |
       <a href="{{ path('conditions_en') }}">Terms of use</a>
