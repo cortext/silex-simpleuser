@@ -560,9 +560,9 @@ class User implements UserInterface, \Serializable
             $errors['email'] = 'Email address appears to be invalid.';
 	}
         //hack ! //todo use a domain blacklist !!	
-	else if (strpos($this->getEmail(), 'qq.com') || strpos($this->getEmail(), '163.com')){
-            $errors['email'] = 'Email address appears to be invalid. Please use authorized domain only.';
-	}
+	//else if (strpos($this->getEmail(), 'qq.com') || strpos($this->getEmail(), '163.com')){
+        //    $errors['email'] = 'Email address appears to be invalid. Please use authorized domain only.';
+	//}
 	else if (strlen($this->getEmail()) > 100) {
             $errors['email'] = 'Email address can\'t be longer than 100 characters.';
         }
